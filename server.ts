@@ -2,7 +2,7 @@ import express from "express";
 import { createServer as createViteServer } from "vite";
 import path from "path";
 import { fileURLToPath } from "url";
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -66,13 +66,13 @@ async function startServer() {
         generationConfig: {
           responseMimeType: "application/json",
           responseSchema: {
-            type: Type.OBJECT,
+            type: "object" as any,
             properties: {
-              title: { type: Type.STRING },
-              description: { type: Type.STRING },
-              colors: { type: Type.ARRAY, items: { type: Type.STRING } },
-              styleHints: { type: Type.ARRAY, items: { type: Type.STRING } },
-              story: { type: Type.STRING },
+              title: { type: "string" as any },
+              description: { type: "string" as any },
+              colors: { type: "array" as any, items: { type: "string" as any } },
+              styleHints: { type: "array" as any, items: { type: "string" as any } },
+              story: { type: "string" as any },
             },
             required: ["title", "description", "colors", "styleHints", "story"],
           },
