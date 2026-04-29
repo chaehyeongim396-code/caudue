@@ -17,14 +17,14 @@ async function startServer() {
   app.use(express.json({ limit: '10mb' }));
 
   // Gemini API Initialization
-  let genAI: GoogleGenAI | null = null;
+  let genAI: any = null;
   const getGenAI = () => {
     if (!genAI) {
       const apiKey = process.env.GEMINI_API_KEY;
       if (!apiKey) {
         throw new Error("GEMINI_API_KEY is not set in environment variables");
       }
-      genAI = new GoogleGenAI(apiKey);
+      genAI = new GoogleGenAI({ apiKey });
     }
     return genAI;
   };
@@ -34,7 +34,6 @@ async function startServer() {
     try {
       const { text, imageBase64, style } = req.body;
       const ai = getGenAI();
-      const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
 
       const prompt = `
         Transform the following memory into a unique fashion pattern design for a high-end personal brand called "Cadeau".
@@ -61,26 +60,26 @@ async function startServer() {
         });
       }
 
-      const result = await model.generateContent({
-        contents: [{ role: "user", parts }],
-        generationConfig: {
+      const response = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
+        contents: { parts },
+        config: {
           responseMimeType: "application/json",
           responseSchema: {
-            type: "object" as any,
+            type: "OBJECT" as any,
             properties: {
-              title: { type: "string" as any },
-              description: { type: "string" as any },
-              colors: { type: "array" as any, items: { type: "string" as any } },
-              styleHints: { type: "array" as any, items: { type: "string" as any } },
-              story: { type: "string" as any },
+              title: { type: "STRING" as any },
+              description: { type: "STRING" as any },
+              colors: { type: "ARRAY" as any, items: { type: "STRING" as any } },
+              styleHints: { type: "ARRAY" as any, items: { type: "STRING" as any } },
+              story: { type: "STRING" as any },
             },
             required: ["title", "description", "colors", "styleHints", "story"],
           },
         },
       });
 
-      const response = await result.response;
-      res.json(JSON.parse(response.text()));
+      res.json(JSON.parse(response.text));
     } catch (error: any) {
       console.error("API Error:", error);
       res.status(500).json({ error: error.message || "Failed to generate pattern" });
