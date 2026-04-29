@@ -72,7 +72,7 @@ export default function Home({ onStartDesign }: HomeProps) {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
-            { title: 'The Ribbon Bag', img: '/regenerated_image_1777443635601.png', category: 'Bags' },
+            { title: 'Bag', img: '/regenerated_image_1777443635601.png', category: 'Bags' },
             { title: 'Vintage Scarf', img: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&q=80&w=600', category: 'Silk' },
             { title: 'Canvas Tote', img: '/regenerated_image_1777443639611.png', category: 'Accessories' }
           ].map((item, i) => (

@@ -268,7 +268,7 @@ export default function Design() {
 
                   <div className="space-y-6">
                     <div className="flex justify-between items-center pb-4 border-b border-[#E8DCC4]">
-                      <span className="text-[10px] uppercase tracking-widest font-medium">Applied to: The Ribbon Bag</span>
+                      <span className="text-[10px] uppercase tracking-widest font-medium">Applied to: Bag</span>
                       <span className="text-[10px] uppercase tracking-widest font-medium">$245.00</span>
                     </div>
                     

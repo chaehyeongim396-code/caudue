@@ -32,7 +32,7 @@ export default function Profile() {
             
             <div className="space-y-4">
               {[
-                { id: '#CDO-9821', date: 'April 20, 2026', status: 'Shipped', item: 'Ribbon Bag "First Snow"' },
+                { id: '#CDO-9821', date: 'April 20, 2026', status: 'Shipped', item: 'Bag "First Snow"' },
                 { id: '#CDO-9745', date: 'March 12, 2026', status: 'Delivered', item: 'Silk Scarf "Velvet Echo"' }
               ].map((order, i) => (
                 <div key={i} className="flex justify-between items-center p-6 bg-white border border-[#E8DCC4]/50 rounded-2xl hover:shadow-md transition-shadow">

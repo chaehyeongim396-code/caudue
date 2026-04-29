@@ -48,7 +48,8 @@ export default function Layout({ children, currentPage, setCurrentPage }: Layout
           <button 
             id="nav-logo"
             onClick={() => setCurrentPage('home')}
-            className="text-2xl font-serif tracking-tighter italic cursor-pointer absolute left-1/2 -translate-x-1/2"
+            className="text-2xl md:text-3xl font-serif italic tracking-tight pointer-events-auto absolute left-1/2 -translate-x-1/2"
+            style={{ fontFamily: 'Georgia, serif' }}
           >
             Cadeau
           </button>
@@ -102,7 +103,7 @@ export default function Layout({ children, currentPage, setCurrentPage }: Layout
       <footer className="border-t border-[#E8DCC4] px-6 py-12 bg-[#dbe9e7]">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
           <div className="max-w-xs">
-            <h2 className="text-xl font-serif italic mb-4">Cadeau</h2>
+            <h3 className="text-xl font-serif italic mb-6" style={{ fontFamily: 'Georgia, serif' }}>Cadeau</h3>
             <p className="text-xs leading-relaxed text-[#7D7D7D] font-light">
               Transforming transient memories into tangible beauty. 
               Personalized design for the modern romantic.
