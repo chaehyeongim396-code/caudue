@@ -232,8 +232,8 @@ export default function Design() {
                           }}
                         ></div>
                       ))}
-                      <div className="absolute inset-0 flex items-center justify-center">
-                         <div className="text-[120px] font-serif opacity-10 select-none tracking-tighter italic">Cadeau</div>
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                         <span className="text-[120px] font-serif opacity-10 select-none tracking-tighter italic text-[#8DC4B8]" style={{ fontFamily: "'Great Vibes', cursive" }}>Cadeau</span>
                       </div>
                     </div>
                   </div>

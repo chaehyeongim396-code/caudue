@@ -13,16 +13,18 @@ export default function Layout({ children, currentPage, setCurrentPage }: Layout
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
-    { id: 'home', label: 'CADEAU' },
-    { id: 'design', label: 'DESIGN' },
-    { id: 'gallery', label: 'GALLERY' },
+    { id: 'home', label: 'HOME' },
+    { id: 'gallery', label: 'SHOP' },
+    { id: 'archive', label: 'GALLERY' },
+    { id: 'about', label: 'ABOUT' },
+    { id: 'design', label: 'CREATE' },
   ];
 
   return (
     <div className="min-h-screen bg-[#dbe9e7] text-[#2C2C2C] font-sans selection:bg-[#E8DCC4] selection:text-[#5A4B3A]">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#dbe9e7]/80 backdrop-blur-md border-b border-[#E8DCC4]/30 px-6 py-4">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#dbe9e7] border-b border-[#E8DCC4]/30 px-6 py-4">
+        <div className="max-w-7xl mx-auto flex justify-between items-center relative h-10">
           <div className="md:hidden">
             <button id="mobile-menu-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -35,7 +37,6 @@ export default function Layout({ children, currentPage, setCurrentPage }: Layout
                 key={item.id}
                 id={`nav-${item.id}`}
                 onClick={() => setCurrentPage(item.id)}
-                style={{ fontFamily: 'Georgia, serif' }}
                 className={`hover:opacity-60 transition-opacity uppercase ${
                   currentPage === item.id ? 'border-b border-[#2C2C2C]' : ''
                 }`}
@@ -48,10 +49,9 @@ export default function Layout({ children, currentPage, setCurrentPage }: Layout
           <button 
             id="nav-logo"
             onClick={() => setCurrentPage('home')}
-            className="text-2xl md:text-3xl font-serif italic tracking-tight pointer-events-auto absolute left-1/2 -translate-x-1/2"
-            style={{ fontFamily: 'Georgia, serif' }}
+            className="absolute left-1/2 -translate-x-1/2 h-12 md:h-16 flex items-center justify-center group"
           >
-            Cadeau
+            <span className="text-2xl md:text-3xl font-serif italic tracking-tight text-[#8DC4B8] transition-opacity group-hover:opacity-70" style={{ fontFamily: "'Great Vibes', cursive" }}>Cadeau</span>
           </button>
 
           <div className="flex gap-6 items-center">
@@ -76,7 +76,7 @@ export default function Layout({ children, currentPage, setCurrentPage }: Layout
           <motion.div 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="md:hidden absolute top-full left-0 right-0 bg-[#FDFBF7] border-b border-[#E8DCC4] p-6 flex flex-col gap-6 text-center tracking-widest uppercase text-sm font-medium"
+            className="md:hidden absolute top-full left-0 right-0 bg-[#dbe9e7] border-b border-[#E8DCC4] p-6 flex flex-col gap-6 text-center tracking-widest uppercase text-sm font-medium"
           >
             {navItems.map((item) => (
               <button
@@ -95,7 +95,7 @@ export default function Layout({ children, currentPage, setCurrentPage }: Layout
       </nav>
 
       {/* Main Content */}
-      <main className="pt-24 pb-12 min-h-[calc(100vh-200px)] bg-[#dbe9e7]">
+      <main className="pt-24 pb-12 min-h-screen bg-[#dbe9e7]">
         {children}
       </main>
 
@@ -103,7 +103,9 @@ export default function Layout({ children, currentPage, setCurrentPage }: Layout
       <footer className="border-t border-[#E8DCC4] px-6 py-12 bg-[#dbe9e7]">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
           <div className="max-w-xs">
-            <h3 className="text-xl font-serif italic mb-6" style={{ fontFamily: 'Georgia, serif' }}>Cadeau</h3>
+            <div className="h-12 mb-6 flex items-start">
+              <span className="text-3xl font-serif italic text-[#8DC4B8]" style={{ fontFamily: "'Great Vibes', cursive" }}>Cadeau</span>
+            </div>
             <p className="text-xs leading-relaxed text-[#7D7D7D] font-light">
               Transforming transient memories into tangible beauty. 
               Personalized design for the modern romantic.
@@ -131,7 +133,7 @@ export default function Layout({ children, currentPage, setCurrentPage }: Layout
           </div>
         </div>
         <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-[#E8DCC4]/50 flex justify-between items-center text-[10px] opacity-40 uppercase tracking-widest">
-          <span>&copy; 2026 Cadeau Atelier</span>
+          <span>&copy; 2026 Cadeau Personal Design Brand. All Rights Reserved.</span>
           <span>Privacy & Terms</span>
         </div>
       </footer>

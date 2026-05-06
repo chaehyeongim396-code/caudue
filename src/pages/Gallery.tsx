@@ -1,73 +1,233 @@
-import { motion } from 'motion/react';
-import { Heart, Search } from 'lucide-react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Upload, ChevronLeft } from 'lucide-react';
 
-const SAMPLES = [
-  { id: 1, title: 'Morning Mist', author: 'Elena S.', img: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=400', likes: 124 },
-  { id: 2, title: 'Sunday Lace', author: 'Minhye K.', img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=400', likes: 89 },
-  { id: 3, title: 'Velvet Echo', author: 'Sarah L.', img: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&q=80&w=400', likes: 210 },
-  { id: 4, title: 'Silk Whisper', author: 'Chloe J.', img: 'https://images.unsplash.com/photo-1515562141207-7a18b5ce7142?auto=format&fit=crop&q=80&w=400', likes: 156 },
-  { id: 5, title: 'Antique Petal', author: 'Yuna P.', img: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=400', likes: 342 },
-  { id: 6, title: 'Ghost of Paris', author: 'Isabella M.', img: 'https://images.unsplash.com/photo-1533158326339-7f3cf2404354?auto=format&fit=crop&q=80&w=400', likes: 178 }
+const CATEGORIES = [
+  { id: 'all', label: '홈' },
+  { id: 'eco-bag', label: '에코백' },
+  { id: 'acc', label: '소품' },
+];
+
+const PRODUCTS = [
+  { 
+    id: 1, 
+    category: 'eco-bag', 
+    title: '클래식 캔버스 백', 
+    price: '15,000원', 
+    img: '/regenerated_image_1777443635601.png' 
+  },
+  { 
+    id: 2, 
+    category: 'eco-bag', 
+    title: '네추럴 린넨 숄더', 
+    price: '18,000원', 
+    img: '/regenerated_image_1777443639611.png' 
+  },
+  { 
+    id: 3, 
+    category: 'eco-bag', 
+    title: '미니 데일리 토트', 
+    price: '12,000원', 
+    img: '/regenerated_image_1777443640441.png' 
+  },
+  { 
+    id: 4, 
+    category: 'eco-bag', 
+    title: '캔버스 포켓 에코백', 
+    price: '19,000원', 
+    img: '/regenerated_image_1777443635601.png' 
+  },
+  { 
+    id: 5, 
+    category: 'eco-bag', 
+    title: '스트라이프 코튼백', 
+    price: '16,000원', 
+    img: 'https://images.unsplash.com/photo-1594222082522-8671178a9463?auto=format&fit=crop&q=80&w=400' 
+  },
+  { 
+    id: 6, 
+    category: 'eco-bag', 
+    title: '베이직 화이트', 
+    price: '13,000원', 
+    img: 'https://images.unsplash.com/photo-1594222082522-8671178a9463?auto=format&fit=crop&q=80&w=400' 
+  },
+  { 
+    id: 7, 
+    category: 'acc', 
+    title: '린넨 파우치', 
+    price: '8,000원', 
+    img: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80&w=400' 
+  },
+  { 
+    id: 8, 
+    category: 'acc', 
+    title: '코튼 키링', 
+    price: '5,000원', 
+    img: 'https://images.unsplash.com/photo-1629131726617-43cf24892461?auto=format&fit=crop&q=80&w=400' 
+  },
+  { 
+    id: 9, 
+    category: 'acc', 
+    title: '핸드메이드 티코스터', 
+    price: '4,500원', 
+    img: 'https://images.unsplash.com/photo-1610471168199-923f59676e19?auto=format&fit=crop&q=80&w=400' 
+  }
 ];
 
 export default function Gallery() {
+  const [activeCategory, setActiveCategory] = useState('eco-bag');
+  const [selectedProduct, setSelectedProduct] = useState<typeof PRODUCTS[0] | null>(null);
+
+  const filteredProducts = activeCategory === 'all' 
+    ? PRODUCTS 
+    : PRODUCTS.filter(p => p.category === activeCategory);
+
+  if (selectedProduct) {
+    return (
+      <div className="max-w-6xl mx-auto px-6 py-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start"
+        >
+          {/* Left: Preview Section */}
+          <div className="space-y-8">
+            <div className="text-center">
+              <h2 className="text-sm font-bold tracking-[0.3em] text-[#8BA8A4] uppercase mb-8">Preview</h2>
+              <div className="aspect-square bg-white rounded-[3rem] border border-gray-100 shadow-xl overflow-hidden flex items-center justify-center p-8 relative">
+                <img 
+                  src={selectedProduct.img} 
+                  alt={selectedProduct.title} 
+                  className="max-w-full max-h-full object-contain opacity-40 mix-blend-multiply" 
+                />
+                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none opacity-20">
+                   <div className="w-12 h-12 border-2 border-dashed border-[#8BA8A4] rounded-full flex items-center justify-center mb-4">
+                      <span className="text-2xl">+</span>
+                   </div>
+                   <p className="text-[10px] text-[#8BA8A4] tracking-widest uppercase">이미지를 업로드하세요</p>
+                </div>
+              </div>
+            </div>
+            
+            <button className="w-full py-5 bg-[#8BA8A4] text-white rounded-2xl font-bold tracking-widest text-sm hover:bg-[#7A9793] transition-all flex items-center justify-center gap-3">
+              <Upload size={18} />
+              이미지 업로드 (.JPG / .PNG)
+            </button>
+          </div>
+
+          {/* Right: Options Section */}
+          <div className="space-y-12 pt-8">
+            <div className="space-y-6">
+              <h1 className="text-2xl font-bold text-[#4A4A4A] tracking-tight">가방 옵션</h1>
+              <div className="h-[1px] bg-gray-100" />
+            </div>
+
+            <div className="bg-[#F9F6F1] rounded-[2.5rem] p-6 flex items-center gap-8 border border-[#E8DCC4]/30">
+              <div className="w-24 h-24 flex items-center justify-center">
+                <img src={selectedProduct.img} className="max-w-full max-h-full object-contain mix-blend-multiply" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-lg font-bold text-[#4A4A4A]">{selectedProduct.title}</h3>
+                <p className="text-sm font-medium text-[#8BA8A4]">{selectedProduct.price}</p>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <h3 className="text-sm font-serif italic text-[#8BA8A4] tracking-wider">Choose another style</h3>
+              <div className="grid grid-cols-5 gap-3">
+                {PRODUCTS.filter(p => p.category === 'eco-bag').slice(0, 6).map((p) => (
+                  <button 
+                    key={p.id}
+                    onClick={() => setSelectedProduct(p)}
+                    className={`aspect-square rounded-xl border-2 transition-all p-1 flex items-center justify-center overflow-hidden bg-white ${
+                      selectedProduct.id === p.id ? 'border-[#8BA8A4] bg-white' : 'border-transparent hover:border-gray-200'
+                    }`}
+                  >
+                    <img src={p.img} className="w-full h-full object-contain mix-blend-multiply" />
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-8 pt-8">
+              <button className="w-full py-6 bg-[#1F2937] text-white rounded-[1.5rem] font-bold text-lg hover:bg-black transition-all shadow-lg hover:shadow-xl translate-y-0 hover:-translate-y-1">
+                제작 요청하기 (주문)
+              </button>
+              
+              <button 
+                onClick={() => setSelectedProduct(null)}
+                className="w-full flex items-center justify-center gap-2 text-[#8BA8A4] text-xs font-medium hover:text-[#4A4A4A] transition-colors"
+              >
+                <ChevronLeft size={16} />
+                뒤로 가기
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16">
-        <div className="max-w-md">
-          <span className="text-[10px] uppercase tracking-[0.4em] font-semibold opacity-40 mb-4 block">Archive</span>
-          <h1 className="text-4xl md:text-6xl font-serif italic mb-6">Gallery of Souls</h1>
-          <p className="text-sm font-light text-[#7D7D7D] leading-relaxed">
-            Explore the unique patterns created by our community. Each piece is a digital footprint of a personal journey.
-          </p>
-        </div>
-        
-        <div className="relative w-full md:w-64">
-           <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 opacity-30" />
-           <input 
-            type="text" 
-            placeholder="Search memories..." 
-            className="w-full bg-[#F9F6F1] border-none rounded-full py-3 pl-12 pr-6 text-xs focus:ring-0 focus:outline-none"
-           />
+    <div className="max-w-6xl mx-auto px-6 py-12">
+      {/* Header Section */}
+      <div className="text-center mb-16 space-y-6">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-col items-center gap-0"
+        >
+          <span className="text-6xl md:text-8xl font-serif italic text-[#8DC4B8]" style={{ fontFamily: "'Great Vibes', cursive" }}>Cadeau</span>
+          <span className="text-[10px] tracking-[0.4em] font-medium text-[#8BA8A4] uppercase -mt-2">Personal Design Brand</span>
+        </motion.div>
+
+        {/* Category Tabs */}
+        <div className="flex justify-center gap-4 mt-12">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.id)}
+              className={`px-8 py-2.5 rounded-full text-xs font-medium tracking-[0.1em] transition-all duration-300 ${
+                activeCategory === cat.id 
+                  ? 'bg-[#8BA8A4]/40 text-[#4A4A4A]' 
+                  : 'text-[#4A4A4A] hover:bg-gray-100'
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
         </div>
       </div>
 
-      <div className="columns-1 sm:columns-2 lg:columns-3 gap-8 space-y-8">
-        {SAMPLES.map((item) => (
-          <motion.div 
-            key={item.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            whileHover={{ y: -5 }}
-            className="break-inside-avoid group cursor-pointer"
-          >
-            <div className="relative rounded-2xl overflow-hidden mb-4 shadow-sm">
-              <img src={item.img} alt={item.title} className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
-                <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#2C2C2C] shadow-lg">
-                  <Heart size={16} />
-                </button>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 pb-24">
+        <AnimatePresence mode="popLayout">
+          {filteredProducts.map((item) => (
+            <motion.div 
+              key={item.id}
+              layout
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => setSelectedProduct(item)}
+              className="group cursor-pointer"
+            >
+              <div className="bg-[#F9F6F1] rounded-[2rem] p-4 aspect-[4/5] flex flex-col items-center justify-center gap-6 overflow-hidden border border-transparent group-hover:border-[#E8DCC4] transition-all">
+                <div className="w-full h-full p-4 flex items-center justify-center">
+                  <img 
+                    src={item.img} 
+                    alt={item.title} 
+                    className="max-w-full max-h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500" 
+                  />
+                </div>
+                <div className="text-center space-y-2 mt-auto pb-4">
+                  <h3 className="text-sm font-bold text-[#4A4A4A]">{item.title}</h3>
+                  <p className="text-xs text-[#8BA8A4] font-medium">{item.price}</p>
+                </div>
               </div>
-            </div>
-            <div className="px-1 flex justify-between items-start">
-              <div>
-                <h3 className="text-sm font-serif mb-1">{item.title}</h3>
-                <p className="text-[10px] uppercase tracking-widest opacity-40 font-medium">by {item.author}</p>
-              </div>
-              <div className="flex items-center gap-1 opacity-40">
-                <Heart size={10} />
-                <span className="text-[10px] font-mono">{item.likes}</span>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-      
-      <div className="mt-24 text-center">
-        <button className="bg-transparent border border-[#E8DCC4] text-[#2C2C2C] px-12 py-4 rounded-full text-xs font-medium tracking-[0.2em] transition-all hover:bg-[#2C2C2C] hover:text-white">
-          LOAD MORE
-        </button>
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
     </div>
   );

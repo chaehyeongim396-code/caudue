@@ -6,6 +6,8 @@
 import { useState, useEffect } from 'react';
 import Layout from './components/Layout';
 import Home from './pages/Home';
+import About from './pages/About';
+import Archive from './pages/Archive';
 import Design from './pages/Design';
 import Gallery from './pages/Gallery';
 import Profile from './pages/Profile';
@@ -22,6 +24,10 @@ export default function App() {
     switch (currentPage) {
       case 'home':
         return <Home onStartDesign={() => setCurrentPage('design')} />;
+      case 'about':
+        return <About />;
+      case 'archive':
+        return <Archive />;
       case 'design':
         return <Design />;
       case 'gallery':
