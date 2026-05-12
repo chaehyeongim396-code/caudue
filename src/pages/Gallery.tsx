@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Upload, ChevronLeft } from 'lucide-react';
-import bagImg1 from '../assets/images/regenerated_image_1778585349920.png';
+import bagImg1 from '../assets/images/regenerated_image_1777443635601.png';
 import bagImg2 from '../assets/images/regenerated_image_1777443639611.png';
 import bagImg3 from '../assets/images/regenerated_image_1777443640441.png';
-import bagImg4 from '../assets/images/regenerated_image_1778577239412.png';
+import bagImg4 from '../assets/images/regenerated_image_1778585349920.png';
 import bagImg5 from '../assets/images/regenerated_image_1778577357126.png';
 import bagImg6 from '../assets/images/regenerated_image_1778577360113.png';
 

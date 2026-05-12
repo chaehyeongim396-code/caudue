@@ -1,14 +1,20 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Heart, Search } from 'lucide-react';
+import sampleImg1 from '../assets/images/regenerated_image_1778585270912.png';
+import sampleImg2 from '../assets/images/regenerated_image_1778585276653.png';
+import sampleImg3 from '../assets/images/regenerated_image_1778585281970.png';
+import sampleImg4 from '../assets/images/regenerated_image_1778585291400.png';
+import sampleImg5 from '../assets/images/regenerated_image_1778585299999.png';
+import sampleImg6 from '../assets/images/regenerated_image_1778577360113.png';
 
 const SAMPLES = [
-  { id: 1, title: 'Morning Mist', author: 'Elena S.', img: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=400', likes: 124 },
-  { id: 2, title: 'Sunday Lace', author: 'Minhye K.', img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=400', likes: 89 },
-  { id: 3, title: 'Velvet Echo', author: 'Sarah L.', img: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&q=80&w=400', likes: 210 },
-  { id: 4, title: 'Silk Whisper', author: 'Chloe J.', img: 'https://images.unsplash.com/photo-1515562141207-7a18b5ce7142?auto=format&fit=crop&q=80&w=400', likes: 156 },
-  { id: 5, title: 'Antique Petal', author: 'Yuna P.', img: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=400', likes: 342 },
-  { id: 6, title: 'Ghost of Paris', author: 'Isabella M.', img: 'https://images.unsplash.com/photo-1533158326339-7f3cf2404354?auto=format&fit=crop&q=80&w=400', likes: 178 }
+  { id: 1, title: 'Morning Mist', author: 'Elena S.', img: sampleImg1, likes: 124 },
+  { id: 2, title: 'Sunday Lace', author: 'Minhye K.', img: sampleImg2, likes: 89 },
+  { id: 3, title: 'Velvet Echo', author: 'Sarah L.', img: sampleImg3, likes: 210 },
+  { id: 4, title: 'Silk Whisper', author: 'Chloe J.', img: sampleImg4, likes: 156 },
+  { id: 5, title: 'Antique Petal', author: 'Yuna P.', img: sampleImg5, likes: 342 },
+  { id: 6, title: 'Ghost of Paris', author: 'Isabella M.', img: sampleImg6, likes: 178 }
 ];
 
 const Archive: React.FC = () => {
