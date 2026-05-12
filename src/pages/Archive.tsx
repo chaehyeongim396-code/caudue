@@ -58,11 +58,7 @@ const Archive: React.FC = () => {
                 </button>
               </div>
             </div>
-            <div className="px-4 flex justify-between items-start">
-              <div>
-                <h3 className="text-sm font-serif italic text-[#4A4A4A] mb-1">{item.title}</h3>
-                <p className="text-[10px] uppercase tracking-widest opacity-40 font-medium">by {item.author}</p>
-              </div>
+            <div className="px-4 flex justify-end items-center">
               <div className="flex items-center gap-1 opacity-40">
                 <Heart size={10} />
                 <span className="text-[10px] font-mono">{item.likes}</span>

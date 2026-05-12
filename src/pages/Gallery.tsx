@@ -4,9 +4,9 @@ import { Upload, ChevronLeft } from 'lucide-react';
 import bagImg1 from '../assets/images/regenerated_image_1777443635601.png';
 import bagImg2 from '../assets/images/regenerated_image_1777443639611.png';
 import bagImg3 from '../assets/images/regenerated_image_1777443640441.png';
-import bagImg4 from '/regenerated_image_1777443631544.png';
-import bagImg5 from '/regenerated_image_1777444452917.png';
-import bagImg6 from '/regenerated_image_1777442501187.png';
+import bagImg4 from '../assets/images/regenerated_image_1777443631544.png';
+import bagImg5 from '../assets/images/regenerated_image_1777444452917.png';
+import bagImg6 from '../assets/images/regenerated_image_1777442501187.png';
 
 const CATEGORIES = [
   { id: 'all', label: '전체' },
@@ -39,7 +39,7 @@ const PRODUCTS = [
   { 
     id: 4, 
     category: 'eco-bag', 
-    title: '캔버스 포켓 에코백', 
+    title: '햄스터 스타 에코백', 
     price: '19,000원', 
     img: bagImg4 
   },
