@@ -2,19 +2,19 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Heart, Search } from 'lucide-react';
 import sampleImg1 from '../assets/images/regenerated_image_1778585270912.png';
-import sampleImg2 from '../assets/images/regenerated_image_1778585276653.png';
-import sampleImg3 from '../assets/images/regenerated_image_1778585281970.png';
-import sampleImg4 from '../assets/images/regenerated_image_1778585291400.png';
-import sampleImg5 from '../assets/images/regenerated_image_1778585299999.png';
+import sampleImg2 from '../assets/images/regenerated_image_1778585349920.png';
+import sampleImg3 from '../assets/images/regenerated_image_1778577239412.png';
+import sampleImg4 from '../assets/images/regenerated_image_1778577242626.png';
+import sampleImg5 from '../assets/images/regenerated_image_1778577357126.png';
 import sampleImg6 from '../assets/images/regenerated_image_1778577360113.png';
 
 const SAMPLES = [
   { id: 1, title: '별빛 햄스터', author: '강서윤', img: sampleImg1, likes: 124 },
-  { id: 2, title: '봄날의 정원', author: '이민수', img: sampleImg2, likes: 89 },
-  { id: 3, title: '구름 산책', author: '박지혜', img: sampleImg3, likes: 210 },
-  { id: 4, title: '가을 숲의 소리', author: '최유진', img: sampleImg4, likes: 156 },
-  { id: 5, title: '여름 바다', author: '김도훈', img: sampleImg5, likes: 342 },
-  { id: 6, title: '푸른 꽃의 춤', author: '정다은', img: sampleImg6, likes: 178 }
+  { id: 2, title: '들판 위의 토끼', author: '이민수', img: sampleImg2, likes: 89 },
+  { id: 3, title: '몽글몽글 구름', author: '박지혜', img: sampleImg3, likes: 210 },
+  { id: 4, title: '가을 숲의 속삭임', author: '최유진', img: sampleImg4, likes: 156 },
+  { id: 5, title: '여름 바다의 노래', author: '김도훈', img: sampleImg5, likes: 342 },
+  { id: 6, title: '블루 빈티지 플라워', author: '정다은', img: sampleImg6, likes: 178 }
 ];
 
 const Archive: React.FC = () => {
