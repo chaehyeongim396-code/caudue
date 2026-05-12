@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Upload, ChevronLeft } from 'lucide-react';
+import bagImg1 from '../assets/images/regenerated_image_1778585349920.png';
+import bagImg2 from '../assets/images/regenerated_image_1777443639611.png';
+import bagImg3 from '../assets/images/regenerated_image_1777443640441.png';
+import bagImg4 from '../assets/images/regenerated_image_1778577239412.png';
+import bagImg5 from '../assets/images/regenerated_image_1778577357126.png';
+import bagImg6 from '../assets/images/regenerated_image_1778577360113.png';
 
 const CATEGORIES = [
   { id: 'all', label: '전체' },
@@ -14,42 +20,42 @@ const PRODUCTS = [
     category: 'eco-bag', 
     title: '클래식 캔버스 백', 
     price: '15,000원', 
-    img: '/regenerated_image_1777443635601.png' 
+    img: bagImg1 
   },
   { 
     id: 2, 
     category: 'eco-bag', 
     title: '네추럴 린넨 숄더', 
     price: '18,000원', 
-    img: '/regenerated_image_1777443639611.png' 
+    img: bagImg2 
   },
   { 
     id: 3, 
     category: 'eco-bag', 
     title: '미니 데일리 토트', 
     price: '12,000원', 
-    img: '/regenerated_image_1777443640441.png' 
+    img: bagImg3 
   },
   { 
     id: 4, 
     category: 'eco-bag', 
     title: '캔버스 포켓 에코백', 
     price: '19,000원', 
-    img: '/regenerated_image_1777443635601.png' 
+    img: bagImg4 
   },
   { 
     id: 5, 
     category: 'eco-bag', 
     title: '스트라이프 코튼백', 
     price: '16,000원', 
-    img: 'https://images.unsplash.com/photo-1594222082522-8671178a9463?auto=format&fit=crop&q=80&w=400' 
+    img: bagImg5 
   },
   { 
     id: 6, 
     category: 'eco-bag', 
     title: '베이직 화이트', 
     price: '13,000원', 
-    img: 'https://images.unsplash.com/photo-1594222082522-8671178a9463?auto=format&fit=crop&q=80&w=400' 
+    img: bagImg6 
   },
   { 
     id: 7, 
