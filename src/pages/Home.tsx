@@ -15,19 +15,20 @@ export default function Home({ onStartDesign }: HomeProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-5xl md:text-7xl font-serif leading-[1.1] mb-6"
+            className="text-[42px] font-serif leading-[1.1] mb-6 text-black"
           >
-            Your Memories, <br />
-            <span className="italic">Woven into Art.</span>
+            "당신의 기억이 <br />
+            <span className="font-normal not-italic">세상에 하나뿐인 디자인이 됩니다"</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             style={{ fontFamily: 'Georgia, serif' }}
-            className="text-sm md:text-base font-light text-[#7D7D7D] max-w-sm mb-10 leading-relaxed"
+            className="text-base font-light text-[#7D7D7D] max-w-[1001px] mb-10 leading-relaxed"
           >
-            Cadeau transforms your most cherished memories into bespoke patterns for personalized fashion items.
+            Cadeau는 당신의 소중한 추억을 가공하여 <br />
+            세상에 하나뿐인 퍼스널 패션 아이템을 위한 독창적인 패턴으로 재탄생시킵니다.
           </motion.p>
           <motion.button
             id="hero-cta"
@@ -39,7 +40,7 @@ export default function Home({ onStartDesign }: HomeProps) {
             style={{ fontFamily: "'Times New Roman', Times, serif" }}
             className="flex items-center gap-4 bg-[#2C2C2C] text-white px-8 py-4 rounded-full text-xs font-medium tracking-[0.2em] transition-all"
           >
-            CREATE YOUR PATTERN <ArrowRight size={16} />
+            나만의 패턴 만들기 <ArrowRight size={16} />
           </motion.button>
         </div>
         
@@ -65,16 +66,16 @@ export default function Home({ onStartDesign }: HomeProps) {
         <div className="flex justify-between items-end mb-12">
           <div>
             <span className="text-[10px] uppercase tracking-[0.3em] font-semibold opacity-40 mb-2 block">Collections</span>
-            <h2 className="text-3xl font-serif italic">The Canvas</h2>
+            <h2 className="text-3xl font-serif italic">더 캔버스</h2>
           </div>
-          <button className="text-[10px] uppercase tracking-[0.2em] border-b border-[#2C2C2C] pb-1 hover:opacity-60 transition-opacity font-medium" style={{ fontFamily: 'Georgia, serif' }}>View All</button>
+          <button className="text-[10px] uppercase tracking-[0.2em] border-b border-[#2C2C2C] pb-1 hover:opacity-60 transition-opacity font-medium" style={{ fontFamily: 'Georgia, serif' }}>전체보기</button>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
-            { title: 'Bag', img: '/regenerated_image_1777443635601.png', category: 'Bags' },
-            { title: 'Vintage Scarf', img: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&q=80&w=600', category: 'Silk' },
-            { title: 'Canvas Tote', img: '/regenerated_image_1777443639611.png', category: 'Accessories' }
+            { title: '가방', img: '/regenerated_image_1777443635601.png', category: 'Bags' },
+            { title: '빈티지 스카프', img: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&q=80&w=600', category: 'Silk' },
+            { title: '캔버스 토트', img: '/regenerated_image_1777443639611.png', category: 'Accessories' }
           ].map((item, i) => (
             <motion.div 
               key={i}
@@ -107,9 +108,9 @@ export default function Home({ onStartDesign }: HomeProps) {
             viewport={{ once: true }}
             className="space-y-8"
           >
-            <span className="text-[10px] uppercase tracking-[0.4em] font-semibold opacity-40" style={{ backgroundColor: '#f8f5ec', color: '#000000' }}>Our Philosophy</span>
+            <span className="text-[10px] uppercase tracking-[0.4em] font-semibold opacity-40" style={{ backgroundColor: '#f8f5ec', color: '#000000' }}>브랜드 철학</span>
             <p className="text-2xl md:text-4xl font-serif italic leading-relaxed" style={{ backgroundColor: '#f8f5ec', color: '#000000' }}>
-              "We believe that fashion should be a mirror to our souls. Not just trends, but the stories that made us who we are."
+              "우리는 패션이 우리의 영혼을 비추는 거울이어야 한다고 믿습니다. 단순한 트렌드가 아닌, 우리를 만든 이야기들을 담아야 합니다."
             </p>
             <div className="w-px h-16 bg-[#000000]/20 mx-auto"></div>
           </motion.div>

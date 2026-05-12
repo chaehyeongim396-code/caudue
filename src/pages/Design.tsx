@@ -4,10 +4,10 @@ import { Upload, X, Sparkles, RefreshCw, ChevronLeft, ChevronRight, Check, Heart
 import { generatePatternFromMemory, PatternDesign } from '../services/geminiService';
 
 const STYLES = [
-  { id: 'romantic', label: 'Romantic', color: 'bg-[#F9E8E8]' },
-  { id: 'vintage', label: 'Vintage', color: 'bg-[#E8DCC4]' },
-  { id: 'dreamy', label: 'Dreamy', color: 'bg-[#E8EEF9]' },
-  { id: 'balletcore', label: 'Balletcore', color: 'bg-[#F2E8F9]' }
+  { id: 'romantic', label: '로맨틱', color: 'bg-[#F9E8E8]' },
+  { id: 'vintage', label: '빈티지', color: 'bg-[#E8DCC4]' },
+  { id: 'dreamy', label: '드라이미', color: 'bg-[#E8EEF9]' },
+  { id: 'balletcore', label: '발레코어', color: 'bg-[#F2E8F9]' }
 ];
 
 export default function Design() {
@@ -42,7 +42,7 @@ export default function Design() {
       setResult(data);
     } catch (error) {
       console.error(error);
-      alert('Failed to generate pattern. Please try again.');
+      alert('패턴 생성에 실패했습니다. 다시 시도해주세요.');
       setStep(2);
     } finally {
       setIsGenerating(false);
@@ -78,16 +78,16 @@ export default function Design() {
             className="flex flex-col items-center text-center max-w-2xl mx-auto"
           >
             <span className="text-[10px] uppercase tracking-[0.4em] font-semibold opacity-40 mb-4">Step 01</span>
-            <h2 className="text-4xl font-serif italic mb-8">Tell us your story</h2>
+            <h2 className="text-4xl font-serif italic mb-8">당신의 이야기를 들려주세요</h2>
             <p className="text-[#7D7D7D] font-light mb-12">
-              Share a memory, a feeling, or a dream. This will be the soul of your pattern.
+              추억, 감정, 또는 꿈을 공유해주세요. 이것이 당신의 패턴의 영혼이 될 것입니다.
             </p>
             
             <textarea
               id="memory-input"
               value={textInput}
               onChange={(e) => setTextInput(e.target.value)}
-              placeholder="The way the sunlight hit the curtains on a quiet Sunday morning..."
+              placeholder="조용한 일요일 아침, 커튼 위로 부서지던 그 햇살..."
               className="w-full h-40 bg-white border border-[#E8DCC4] rounded-2xl p-6 text-sm font-light focus:outline-none focus:border-[#2C2C2C] transition-colors resize-none mb-8"
             />
 
@@ -117,7 +117,7 @@ export default function Design() {
                   <div className="w-12 h-12 rounded-full bg-[#E8DCC4]/30 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Upload size={20} className="text-[#5A4B3A]" />
                   </div>
-                  <span className="text-xs uppercase tracking-widest opacity-60 font-medium">Or upload an image</span>
+                  <span className="text-xs uppercase tracking-widest opacity-60 font-medium">또는 사진 업로드하기</span>
                 </>
               )}
             </div>
@@ -128,7 +128,7 @@ export default function Design() {
               disabled={!textInput && !image}
               className="mt-12 bg-[#2C2C2C] text-white px-10 py-4 rounded-full text-xs font-medium tracking-[0.2em] disabled:opacity-30 transition-all hover:px-12"
             >
-              NEXT STEP
+              다음 단계
             </button>
           </motion.div>
         )}
@@ -142,9 +142,9 @@ export default function Design() {
             className="flex flex-col items-center text-center max-w-xl mx-auto"
           >
             <span className="text-[10px] uppercase tracking-[0.4em] font-semibold opacity-40 mb-4">Step 02</span>
-            <h2 className="text-4xl font-serif italic mb-8">Choose your aesthetic</h2>
+            <h2 className="text-4xl font-serif italic mb-8">감성을 선택하세요</h2>
             <p className="text-[#7D7D7D] font-light mb-12">
-              Select the visual mood that best represents your memory.
+              당신의 추억을 가장 잘 표현하는 시각적 분위기를 선택해주세요.
             </p>
 
             <div className="grid grid-cols-2 gap-4 w-full mb-12">
@@ -174,14 +174,14 @@ export default function Design() {
                 onClick={() => setStep(1)}
                 className="flex-1 border border-[#E8DCC4] text-[#2C2C2C] px-10 py-4 rounded-full text-xs font-medium tracking-[0.2em]"
               >
-                BACK
+                이전으로
               </button>
               <button
                 id="step2-generate"
                 onClick={handleStartGeneration}
                 className="flex-[2] bg-[#2C2C2C] text-white px-10 py-4 rounded-full text-xs font-medium tracking-[0.2em] flex items-center justify-center gap-2 group"
               >
-                <Sparkles size={16} /> GENERATE PATTERN
+                <Sparkles size={16} /> 패턴 생성하기
               </button>
             </div>
           </motion.div>
@@ -203,9 +203,9 @@ export default function Design() {
                 >
                   <RefreshCw size={48} strokeWidth={1} className="text-[#E8DCC4]" />
                 </motion.div>
-                <h2 className="text-2xl font-serif italic mb-4">Weaving your pattern...</h2>
+                <h2 className="text-2xl font-serif italic mb-4">패턴을 엮는 중입니다...</h2>
                 <p className="text-sm font-light text-[#7D7D7D] max-w-xs leading-relaxed">
-                  Our AI is analyzing the emotional nuances of your memory to create a design that belongs only to you.
+                  인공지능이 당신의 추억 속 감정적 뉘앙스를 분석하여 오직 당신만의 디자인을 만들고 있습니다.
                 </p>
               </div>
             ) : result && (
@@ -250,7 +250,7 @@ export default function Design() {
 
                 <div className="space-y-10">
                   <div className="space-y-4">
-                    <span className="text-[10px] uppercase tracking-[0.4em] font-semibold opacity-40">Your Unique Design</span>
+                    <span className="text-[10px] uppercase tracking-[0.4em] font-semibold opacity-40">나만의 고유한 디자인</span>
                     <h2 className="text-5xl font-serif leading-tight italic">{result.title}</h2>
                     <p className="text-sm font-light text-[#7D7D7D] leading-relaxed">
                       {result.description}
@@ -259,7 +259,7 @@ export default function Design() {
 
                   <div className="bg-[#F9F6F1] p-8 rounded-3xl border border-[#E8DCC4]/50">
                     <h3 className="text-xs uppercase tracking-widest font-semibold mb-6 flex items-center gap-2">
-                       <Heart size={14} fill="#2C2C2C" /> THE STORY
+                       <Heart size={14} fill="#2C2C2C" /> 담긴 이야기
                     </h3>
                     <p className="font-serif italic text-lg leading-relaxed text-[#5A4B3A]">
                       "{result.story}"
@@ -268,15 +268,15 @@ export default function Design() {
 
                   <div className="space-y-6">
                     <div className="flex justify-between items-center pb-4 border-b border-[#E8DCC4]">
-                      <span className="text-[10px] uppercase tracking-widest font-medium">Applied to: Bag</span>
-                      <span className="text-[10px] uppercase tracking-widest font-medium">$245.00</span>
+                      <span className="text-[10px] uppercase tracking-widest font-medium">아이템: 에코백</span>
+                      <span className="text-[10px] uppercase tracking-widest font-medium">245,000원</span>
                     </div>
                     
                     <button
                       id="buy-btn"
                       className="w-full bg-[#2C2C2C] text-white py-5 rounded-full text-xs font-medium tracking-[0.2em] transition-all hover:scale-[1.02]"
                     >
-                      PROCEED TO CHECKOUT
+                      제작 요청하기 (주문)
                     </button>
                     
                     <button
@@ -284,7 +284,7 @@ export default function Design() {
                       onClick={() => setStep(2)}
                       className="w-full flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest font-semibold opacity-60 hover:opacity-100 transition-opacity"
                     >
-                      <RefreshCw size={12} /> REGENERATE DESIGN
+                      <RefreshCw size={12} /> 디자인 다시 만들기
                     </button>
                   </div>
                 </div>

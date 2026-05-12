@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Upload, Lightbulb, CheckCircle, ShoppingBag, ArrowRight } from 'lucide-react';
+import { Upload, Lightbulb, CheckCircle, ShoppingBag } from 'lucide-react';
 
 const About: React.FC = () => {
   return (
@@ -54,7 +54,7 @@ const About: React.FC = () => {
         </section>
 
         {/* Process Visualization */}
-        <section className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 lg:gap-16 pb-12 px-4 py-32 bg-[#E9F1EF]/30 rounded-[5rem] my-24 shadow-inner">
+        <section className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 lg:gap-16 pb-12 px-4 py-32 bg-[#E9F1EF]/30 rounded-[5rem] my-24 shadow-inner text-center">
             <div className="flex flex-col items-center gap-6">
               <motion.div 
                 initial={{ opacity: 0, x: -20 }}
@@ -64,7 +64,7 @@ const About: React.FC = () => {
               >
                  <img src="/about_inspiration.png" className="w-full h-full object-cover" alt="Source Inspiration" />
               </motion.div>
-              <span className="text-[10px] tracking-[0.3em] font-medium text-[#8BA8A4] uppercase">Step 01. Inspiration</span>
+              <span className="text-[10px] tracking-[0.3em] font-medium text-[#8BA8A4] uppercase">Step 01. 영감 기록</span>
             </div>
             
             <div className="hidden md:block">
@@ -81,7 +81,7 @@ const About: React.FC = () => {
               >
                  <img src="/about_pattern.png" className="w-full h-full object-cover" alt="AI Generated Patterns" />
               </motion.div>
-              <span className="text-[10px] tracking-[0.3em] font-medium text-[#8BA8A4] uppercase">Step 02. Pattern Design</span>
+              <span className="text-[10px] tracking-[0.3em] font-medium text-[#8BA8A4] uppercase">Step 02. 패턴 디자인</span>
             </div>
 
             <div className="hidden md:block">
@@ -91,21 +91,21 @@ const About: React.FC = () => {
             <div className="flex flex-col items-center gap-6">
               <motion.div 
                 initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.4 }}
                 className="w-64 md:w-72 lg:w-80 aspect-square rounded-[3.5rem] overflow-hidden shadow-2xl border border-white/50 ring-8 ring-white/20 bg-white"
               >
                  <img src="/about_product.png" className="w-full h-full object-cover" alt="Final Personalized Products" />
               </motion.div>
-              <span className="text-[10px] tracking-[0.3em] font-medium text-[#8BA8A4] uppercase">Step 03. Bespoke Item</span>
+              <span className="text-[10px] tracking-[0.3em] font-medium text-[#8BA8A4] uppercase">Step 03. 패션 아이템</span>
             </div>
         </section>
 
         {/* How to Order Section */}
         <section className="space-y-16">
           <div className="text-center">
-            <h2 className="text-3xl md:text-4xl font-serif tracking-[0.3em] text-[#4A4A4A] uppercase italic">How to Order</h2>
+            <h2 className="text-3xl md:text-4xl font-serif tracking-[0.3em] text-[#4A4A4A] uppercase not-italic">구매 방법</h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -151,7 +151,7 @@ const About: React.FC = () => {
                   <item.icon strokeWidth={1} size={40} />
                 </div>
                 <div className="space-y-4">
-                  <span className="text-[10px] tracking-[0.2em] font-bold text-[#8BA8A4] uppercase">Step {item.step}</span>
+                  <span className="text-[10px] tracking-[0.2em] font-bold text-[#8BA8A4] uppercase">단계 {item.step}</span>
                   <h3 className={`text-base font-bold whitespace-nowrap ${item.highlight ? 'text-[#8BA8A4] italic' : 'text-[#333333]'}`}>
                     {item.title}
                   </h3>

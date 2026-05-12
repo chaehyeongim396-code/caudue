@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Upload, ChevronLeft } from 'lucide-react';
 
 const CATEGORIES = [
-  { id: 'all', label: '홈' },
+  { id: 'all', label: '전체' },
   { id: 'eco-bag', label: '에코백' },
   { id: 'acc', label: '소품' },
 ];
@@ -85,6 +85,13 @@ export default function Gallery() {
   if (selectedProduct) {
     return (
       <div className="max-w-6xl mx-auto px-6 py-12">
+        <button 
+          onClick={() => setSelectedProduct(null)}
+          className="flex items-center gap-2 text-[#8BA8A4] text-xs font-medium hover:text-[#4A4A4A] transition-colors mb-8"
+        >
+          <ChevronLeft size={16} />
+          뒤로 가기
+        </button>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -93,7 +100,7 @@ export default function Gallery() {
           {/* Left: Preview Section */}
           <div className="space-y-8">
             <div className="text-center">
-              <h2 className="text-sm font-bold tracking-[0.3em] text-[#8BA8A4] uppercase mb-8">Preview</h2>
+              <h2 className="text-sm font-bold tracking-[0.3em] text-[#8BA8A4] uppercase mb-8">미리보기</h2>
               <div className="aspect-square bg-white rounded-[3rem] border border-gray-100 shadow-xl overflow-hidden flex items-center justify-center p-8 relative">
                 <img 
                   src={selectedProduct.img} 
@@ -133,7 +140,7 @@ export default function Gallery() {
             </div>
 
             <div className="space-y-6">
-              <h3 className="text-sm font-serif italic text-[#8BA8A4] tracking-wider">Choose another style</h3>
+              <h3 className="text-sm font-serif italic text-[#8BA8A4] tracking-wider">다른 스타일 선택하기</h3>
               <div className="grid grid-cols-5 gap-3">
                 {PRODUCTS.filter(p => p.category === 'eco-bag').slice(0, 6).map((p) => (
                   <button 
@@ -153,14 +160,6 @@ export default function Gallery() {
               <button className="w-full py-6 bg-[#1F2937] text-white rounded-[1.5rem] font-bold text-lg hover:bg-black transition-all shadow-lg hover:shadow-xl translate-y-0 hover:-translate-y-1">
                 제작 요청하기 (주문)
               </button>
-              
-              <button 
-                onClick={() => setSelectedProduct(null)}
-                className="w-full flex items-center justify-center gap-2 text-[#8BA8A4] text-xs font-medium hover:text-[#4A4A4A] transition-colors"
-              >
-                <ChevronLeft size={16} />
-                뒤로 가기
-              </button>
             </div>
           </div>
         </motion.div>
@@ -178,7 +177,7 @@ export default function Gallery() {
           className="flex flex-col items-center gap-0"
         >
           <span className="text-6xl md:text-8xl font-serif italic text-[#8DC4B8]" style={{ fontFamily: "'Great Vibes', cursive" }}>Cadeau</span>
-          <span className="text-[10px] tracking-[0.4em] font-medium text-[#8BA8A4] uppercase -mt-2">Personal Design Brand</span>
+          <span className="text-[10px] tracking-[0.4em] font-medium text-[#8BA8A4] uppercase -mt-2">퍼스널 디자인 브랜드</span>
         </motion.div>
 
         {/* Category Tabs */}

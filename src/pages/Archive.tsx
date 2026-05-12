@@ -17,9 +17,10 @@ const Archive: React.FC = () => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16">
         <div className="max-w-md">
           <span className="text-[10px] uppercase tracking-[0.4em] font-semibold text-[#8BA8A4] mb-4 block">Archive</span>
-          <h1 className="text-4xl md:text-6xl font-serif italic mb-6 text-[#4A4A4A]">Gallery of Souls</h1>
+          <h1 className="text-4xl md:text-6xl font-serif italic mb-6 text-[#4A4A4A]">영혼의 갤러리</h1>
           <p className="text-sm font-light text-[#7D7D7D] leading-relaxed">
-            Explore the unique patterns created by our community. Each piece is a digital footprint of a personal journey.
+            우리 커뮤니티가 만든 고유한 패턴들을 탐색해보세요. <br />
+            각 작품은 개인적인 여정의 디지털 발자국입니다.
           </p>
         </div>
         
@@ -27,7 +28,7 @@ const Archive: React.FC = () => {
            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 opacity-30" />
            <input 
             type="text" 
-            placeholder="Search memories..." 
+            placeholder="추억 검색하기..." 
             className="w-full bg-[#F9F6F1] border-none rounded-full py-3 pl-12 pr-6 text-xs focus:ring-1 focus:ring-[#8BA8A4]/20 focus:outline-none"
            />
         </div>
@@ -67,7 +68,7 @@ const Archive: React.FC = () => {
       
       <div className="mt-24 text-center">
         <button className="bg-transparent border border-[#E8DCC4] text-[#2C2C2C] px-12 py-4 rounded-full text-xs font-medium tracking-[0.2em] transition-all hover:bg-[#8BA8A4] hover:text-white hover:border-transparent">
-          LOAD MORE
+          더 보기
         </button>
       </div>
     </div>

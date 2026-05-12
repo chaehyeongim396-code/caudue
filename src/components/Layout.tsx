@@ -111,26 +111,6 @@ export default function Layout({ children, currentPage, setCurrentPage }: Layout
               Personalized design for the modern romantic.
             </p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-12 text-[10px] tracking-[0.1em] uppercase font-medium">
-            <div className="flex flex-col gap-4">
-              <span className="opacity-40">Shop</span>
-              <button className="hover:opacity-60 text-left">Bags</button>
-              <button className="hover:opacity-60 text-left">Accessories</button>
-              <button className="hover:opacity-60 text-left">Gifting</button>
-            </div>
-            <div className="flex flex-col gap-4">
-              <span className="opacity-40">Support</span>
-              <button className="hover:opacity-60 text-left">Shipping</button>
-              <button className="hover:opacity-60 text-left">Returns</button>
-              <button className="hover:opacity-60 text-left">FAQ</button>
-            </div>
-            <div className="flex flex-col gap-4">
-              <span className="opacity-40">Follow</span>
-              <button className="hover:opacity-60 text-left">Instagram</button>
-              <button className="hover:opacity-60 text-left">Journal</button>
-              <button className="hover:opacity-60 text-left">Newsletter</button>
-            </div>
-          </div>
         </div>
         <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-[#E8DCC4]/50 flex justify-between items-center text-[10px] opacity-40 uppercase tracking-widest">
           <span>&copy; 2026 Cadeau Personal Design Brand. All Rights Reserved.</span>
