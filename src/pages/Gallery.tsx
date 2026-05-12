@@ -39,7 +39,7 @@ const PRODUCTS = [
   { 
     id: 4, 
     category: 'eco-bag', 
-    title: '햄스터 스타 에코백', 
+    title: '캔버스 포켓 에코백', 
     price: '19,000원', 
     img: bagImg4 
   },
