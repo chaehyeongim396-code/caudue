@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Upload, X, Sparkles, RefreshCw, ChevronLeft, ChevronRight, Check, Heart } from 'lucide-react';
 import { generatePatternFromMemory, PatternDesign } from '../services/geminiService';
+import logo from '../assets/images/regenerated_image_1778585349920.png';
 
 const STYLES = [
   { id: 'romantic', label: '로맨틱', color: 'bg-[#F9E8E8]' },
@@ -54,7 +55,7 @@ export default function Design() {
       {/* Progress Bar */}
       <div className="flex justify-center mb-16 relative">
         <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-[#E8DCC4] -translate-y-1/2 -z-10"></div>
-        <div className="flex gap-12 bg-[#FDFBF7] px-8">
+        <div className="flex gap-12">
           {[1, 2, 3].map((s) => (
             <div 
               key={s}
@@ -232,9 +233,6 @@ export default function Design() {
                           }}
                         ></div>
                       ))}
-                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                         <span className="text-[120px] font-serif opacity-10 select-none tracking-tighter italic text-[#8DC4B8]" style={{ fontFamily: "'Great Vibes', cursive" }}>Cadeau</span>
-                      </div>
                     </div>
                   </div>
 

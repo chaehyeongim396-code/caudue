@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Upload, Lightbulb, CheckCircle, ShoppingBag } from 'lucide-react';
+import logo from '../assets/images/regenerated_image_1778585349920.png';
 
 const About: React.FC = () => {
   return (
@@ -14,7 +15,12 @@ const About: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col items-center gap-0"
           >
-            <span className="text-8xl md:text-9xl font-serif italic text-[#8DC4B8]" style={{ fontFamily: "'Great Vibes', cursive" }}>Cadeau</span>
+            <img 
+              src={logo} 
+              alt="Cadeau" 
+              className="h-32 md:h-48 w-auto object-contain" 
+              referrerPolicy="no-referrer" 
+            />
             <p className="text-[#8BA8A4] text-xs md:text-sm font-medium tracking-[0.2em] uppercase mt-4">
               개인 경험을 디자인으로 재해석하여 패션 아이템으로 제공하는 퍼스널 디자인 브랜드
             </p>

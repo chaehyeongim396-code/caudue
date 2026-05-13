@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Upload, ChevronLeft } from 'lucide-react';
+import logo from '../assets/images/regenerated_image_1778585349920.png';
 import bagImg1 from '../assets/images/regenerated_image_1777443635601.png';
 import bagImg2 from '../assets/images/regenerated_image_1777443639611.png';
 import bagImg3 from '../assets/images/regenerated_image_1777443640441.png';
@@ -182,7 +183,12 @@ export default function Gallery() {
           animate={{ opacity: 1, y: 0 }}
           className="flex flex-col items-center gap-0"
         >
-          <span className="text-6xl md:text-8xl font-serif italic text-[#8DC4B8]" style={{ fontFamily: "'Great Vibes', cursive" }}>Cadeau</span>
+          <img 
+            src={logo} 
+            alt="Cadeau" 
+            className="h-24 md:h-36 w-auto object-contain" 
+            referrerPolicy="no-referrer" 
+          />
           <span className="text-[10px] tracking-[0.4em] font-medium text-[#8BA8A4] uppercase -mt-2">퍼스널 디자인 브랜드</span>
         </motion.div>
 

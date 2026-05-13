@@ -1,7 +1,7 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { motion } from 'motion/react';
 import { Heart, ShoppingBag, User, Sparkles, Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import logo from '../assets/images/regenerated_image_1778585349920.png';
 
 interface LayoutProps {
   children: ReactNode;
@@ -51,7 +51,12 @@ export default function Layout({ children, currentPage, setCurrentPage }: Layout
             onClick={() => setCurrentPage('home')}
             className="absolute left-1/2 -translate-x-1/2 h-12 md:h-16 flex items-center justify-center group"
           >
-            <span className="text-2xl md:text-3xl font-serif italic tracking-tight text-[#8DC4B8] transition-opacity group-hover:opacity-70" style={{ fontFamily: "'Great Vibes', cursive" }}>Cadeau</span>
+            <img 
+              src={logo} 
+              alt="Cadeau" 
+              className="h-full w-auto object-contain transition-opacity group-hover:opacity-70" 
+              referrerPolicy="no-referrer"
+            />
           </button>
 
           <div className="flex gap-6 items-center">
@@ -104,7 +109,12 @@ export default function Layout({ children, currentPage, setCurrentPage }: Layout
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
           <div className="max-w-xs">
             <div className="h-12 mb-6 flex items-start">
-              <span className="text-3xl font-serif italic text-[#8DC4B8]" style={{ fontFamily: "'Great Vibes', cursive" }}>Cadeau</span>
+              <img 
+                src={logo} 
+                alt="Cadeau" 
+                className="h-full w-auto object-contain" 
+                referrerPolicy="no-referrer"
+              />
             </div>
             <p className="text-xs leading-relaxed text-[#7D7D7D] font-light">
               Transforming transient memories into tangible beauty. 
