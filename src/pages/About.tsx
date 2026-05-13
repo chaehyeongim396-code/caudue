@@ -47,11 +47,11 @@ const About: React.FC = () => {
                 <h2 className="text-xl md:text-2xl font-bold text-[#333333] tracking-tight">
                   "당신의 기억이 세상에 하나뿐인 디자인이 됩니다."
                 </h2>
-                <div className="max-w-2xl mx-auto space-y-4 text-[#666666] leading-relaxed font-normal text-sm md:text-base">
+                <div className="max-w-3xl mx-auto space-y-4 text-[#666666] leading-relaxed font-normal text-sm md:text-base">
                   <p>
                     사용자의 소중한 추억과 특별한 경험을 AI 알고리즘을 통해 독창적인 패턴으로 시각화합니다.
                   </p>
-                  <p>
+                  <p className="md:whitespace-nowrap">
                     Cadeau는 단순한 패션 아이템을 넘어, 당신의 이야기를 담은 가장 개인적인 선물을 제안합니다.
                   </p>
                 </div>
