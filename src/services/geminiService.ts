@@ -7,17 +7,17 @@ export interface PatternDesign {
 }
 
 export async function generatePatternFromMemory(input: { text?: string; imageBase64?: string; style: string }): Promise<PatternDesign> {
-  const response = await fetch("/api/generate-pattern", {
-    method: "POST",
+  const response = await fetch('/api/generate-pattern', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(input),
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.error || "Failed to generate pattern design details.");
+    const errText = await response.text();
+    throw new Error(errText || 'Failed to generate pattern on server');
   }
 
   return response.json();

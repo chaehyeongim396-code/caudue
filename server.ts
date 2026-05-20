@@ -1,39 +1,45 @@
 import express from "express";
 import path from "path";
-import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
+import { GoogleGenAI, Type } from "@google/genai";
 
 dotenv.config();
+
+let aiClient: GoogleGenAI | null = null;
+function getAiClient() {
+  if (!aiClient) {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      throw new Error("GEMINI_API_KEY environment variable is required");
+    }
+    aiClient = new GoogleGenAI({
+      apiKey,
+      httpOptions: {
+        headers: {
+          'User-Agent': 'aistudio-build',
+        }
+      }
+    });
+  }
+  return aiClient;
+}
 
 async function startServer() {
   const app = express();
   const PORT = 3000;
 
-  app.use(express.json({ limit: '10mb' }));
+  app.use(express.json({ limit: "10mb" }));
 
   // Health check endpoint
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok" });
   });
 
-  // Gemini API Initialization
-  let genAI: any = null;
-  const getGenAI = () => {
-    if (!genAI) {
-      const apiKey = process.env.GEMINI_API_KEY;
-      if (!apiKey) {
-        throw new Error("GEMINI_API_KEY is not set in environment variables");
-      }
-      genAI = new GoogleGenAI({ apiKey });
-    }
-    return genAI;
-  };
-
-  // API route for pattern generation
+  // Gemini pattern generation endpoint
   app.post("/api/generate-pattern", async (req, res) => {
     try {
       const { text, imageBase64, style } = req.body;
-      const ai = getGenAI();
+      const ai = getAiClient();
 
       const prompt = `
         Transform the following memory into a unique fashion pattern design for a high-end personal brand called "Cadeau".
@@ -61,44 +67,65 @@ async function startServer() {
       }
 
       const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: "gemini-3.5-flash",
         contents: { parts },
         config: {
           responseMimeType: "application/json",
           responseSchema: {
-            type: "OBJECT" as any,
+            type: Type.OBJECT,
             properties: {
-              title: { type: "STRING" as any },
-              description: { type: "STRING" as any },
-              colors: { type: "ARRAY" as any, items: { type: "STRING" as any } },
-              styleHints: { type: "ARRAY" as any, items: { type: "STRING" as any } },
-              story: { type: "STRING" as any },
+              title: { type: Type.STRING },
+              description: { type: Type.STRING },
+              colors: { type: Type.ARRAY, items: { type: Type.STRING } },
+              styleHints: { type: Type.ARRAY, items: { type: Type.STRING } },
+              story: { type: Type.STRING },
             },
             required: ["title", "description", "colors", "styleHints", "story"],
           },
         },
       });
 
-      res.json(JSON.parse(response.text));
+      const textResult = response.text;
+      if (!textResult) {
+        throw new Error("No response from AI");
+      }
+      
+      res.json(JSON.parse(textResult));
     } catch (error: any) {
-      console.error("API Error:", error);
-      res.status(500).json({ error: error.message || "Failed to generate pattern" });
+      console.error("Gemini API Error:", error);
+      res.status(500).send(error.message || "Failed to generate pattern using Gemini");
     }
   });
 
+  let isProduction = process.env.NODE_ENV === "production" || process.env.ENV === "production";
+
   // Vite middleware for development
-  if (process.env.NODE_ENV !== "production") {
-    const { createServer: createViteServer } = await import("vite");
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
-  } else {
+  if (!isProduction) {
+    console.log("Starting in development mode with Vite...");
+    try {
+      const { createServer: createViteServer } = await import("vite");
+      const vite = await createViteServer({
+        server: { middlewareMode: true },
+        appType: "spa",
+      });
+      app.use(vite.middlewares);
+    } catch (e) {
+      console.warn("Vite not found or failed to start, falling back to static serving if dist exists.");
+      isProduction = true; // Fallback to production mode behavior
+    }
+  }
+
+  if (isProduction) {
+    console.log("Starting in production mode...");
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
     app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
+      const indexPath = path.join(distPath, "index.html");
+      res.sendFile(indexPath, (err) => {
+        if (err) {
+          res.status(404).send("index.html not found in dist. Did you run the build?");
+        }
+      });
     });
   }
 

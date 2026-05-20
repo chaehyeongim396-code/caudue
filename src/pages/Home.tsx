@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
+import bagImg1 from '../assets/images/regenerated_image_1779258635502.png';
 
 interface HomeProps {
   onStartDesign: () => void;
@@ -73,7 +74,7 @@ export default function Home({ onStartDesign }: HomeProps) {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
-            { title: '가방', img: '/regenerated_image_1777443635601.png', category: 'Bags' },
+            { title: '가방', img: bagImg1, category: 'Bags' },
             { title: '포켓 파우치', img: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&q=80&w=600', category: '소품' },
             { title: '캔버스 토트', img: '/regenerated_image_1777443639611.png', category: 'Accessories' }
           ].map((item, i) => (

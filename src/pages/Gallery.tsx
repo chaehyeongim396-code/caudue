@@ -1,21 +1,22 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Upload, ChevronLeft } from 'lucide-react';
 import logo from '../assets/images/regenerated_image_1778585349920.png';
-import bagImg1 from '../assets/images/regenerated_image_1777443635601.png';
+import bagImg1 from '../assets/images/regenerated_image_1779258635502.png';
 import bagImg2 from '../assets/images/regenerated_image_1777443639611.png';
 import bagImg3 from '../assets/images/regenerated_image_1777443640441.png';
 import bagImg4 from '../assets/images/regenerated_image_1777443631544.png';
 import bagImg5 from '../assets/images/regenerated_image_1777444452917.png';
 import bagImg6 from '../assets/images/regenerated_image_1777442501187.png';
-import wearImg1 from '../assets/images/regenerated_image_1778662295101.png';
-import wearImg2 from '../assets/images/regenerated_image_1778662139513.png';
+import wearImg1 from '../assets/images/regenerated_image_1778664513165.png';
 import wearBasicWhite from '../assets/images/wear_basic_white.png';
+import coasterImg from '../assets/images/regenerated_image_1778665142121.png';
+import pouchImg from '../assets/images/regenerated_image_1778663374750.png';
 
 const CATEGORIES = [
   { id: 'all', label: '전체' },
   { id: 'eco-bag', label: '에코백' },
-  { id: 'acc', label: '소품' },
+  { id: 'acc', label: '소품' }
 ];
 
 const PRODUCTS = [
@@ -28,9 +29,9 @@ const PRODUCTS = [
     description: '어떤 룩에도 잘 어울리는 가장 기본적인 디자인의 캔버스 백입니다.\n탄탄한 조직감의 10수 캔버스 원단으로 제작되어 내구성이 뛰어납니다.',
     size: '가로 36cm x 세로 40cm (끈 길이 60cm)',
     material: 'Cotton 100% (10oz Canvas)',
+    printAreaClass: 'top-[31%] left-[24%] w-[51%] h-[44%] rounded-sm',
     wearImages: [
-      wearImg1,
-      wearImg2
+      wearImg1
     ]
   },
   { 
@@ -42,6 +43,7 @@ const PRODUCTS = [
     description: '린넨 특유의 내추럴한 질감이 돋보이는 숄더백입니다.\n가벼운 무게감으로 여름철 데일리백으로 강력 추천합니다.',
     size: '가로 38cm x 세로 42cm (끈 길이 65cm)',
     material: 'Linen 55% Cotton 45%',
+    printAreaClass: 'top-[35%] left-[25%] w-[49%] h-[38%] rounded-sm',
     wearImages: [
       'https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6?auto=format&fit=crop&q=80&w=600',
       'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&q=80&w=600'
@@ -56,6 +58,7 @@ const PRODUCTS = [
     description: '가벼운 외출에 적합한 콤팩트한 사이즈의 토트백입니다.\n내부에 작은 포켓이 있어 수납이 편리합니다.',
     size: '가로 25cm x 세로 22cm x 폭 8cm',
     material: 'Cotton 100%',
+    printAreaClass: 'top-[33%] left-[27%] w-[46%] h-[40%] rounded-md',
     wearImages: [
       'https://images.unsplash.com/photo-1544816153-12ad5d7140a1?auto=format&fit=crop&q=80&w=600'
     ]
@@ -69,6 +72,7 @@ const PRODUCTS = [
     description: '외부에 큰 포켓이 있어 실용성을 높인 디자인입니다.\n넉넉한 수납공간으로 보조 가방이나 장바구니로도 훌륭합니다.',
     size: '가로 42cm x 세로 38cm x 폭 10cm',
     material: 'Cotton 100% (High Density)',
+    printAreaClass: 'top-[36%] left-[23%] w-[53%] h-[36%] rounded-sm',
     wearImages: [
       'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&q=80&w=600'
     ]
@@ -82,6 +86,7 @@ const PRODUCTS = [
     description: '청량감 있는 스트라이프 패턴이 포인트가 되는 코튼백입니다.\n캐주얼한 룩에 경쾌함을 더해줍니다.',
     size: '가로 35cm x 세로 38cm',
     material: 'Yarn-dyed Cotton 100%',
+    printAreaClass: 'top-[32%] left-[24%] w-[51%] h-[44%] rounded-sm',
     wearImages: [
       'https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6?auto=format&fit=crop&q=80&w=600'
     ]
@@ -95,6 +100,7 @@ const PRODUCTS = [
     description: '깨끗한 화이트 컬러의 정석 에코백입니다.\n어떠한 전사나 인쇄에도 방해받지 않는 순수한 화이트 캔버스입니다.',
     size: '가로 36cm x 세로 40cm',
     material: 'Bleached Cotton 100%',
+    printAreaClass: 'top-[29%] left-[23%] w-[54%] h-[49%] rounded-sm',
     wearImages: [
       wearBasicWhite
     ]
@@ -108,17 +114,19 @@ const PRODUCTS = [
     description: '화장품이나 소지품 정리에 좋은 린넨 파우치입니다. 스트링으로 입구를 조절할 수 있습니다.',
     size: '15cm x 18cm',
     material: 'Linen 100%',
+    printAreaClass: 'top-[26%] left-[25%] w-[49%] h-[49%] rounded-xl',
     wearImages: []
   },
   { 
     id: 8, 
     category: 'acc', 
-    title: '코튼 키링', 
-    price: '5,000원', 
-    img: 'https://images.unsplash.com/photo-1629131726617-43cf24892461?auto=format&fit=crop&q=80&w=400',
-    description: '가방에 포인트를 주기 좋은 앙증맞은 키링입니다. 부드러운 코튼 소재로 제작되었습니다.',
-    size: '5cm x 8cm',
-    material: 'Cotton, Stainless Steel',
+    title: '파우치', 
+    price: '8,000원', 
+    img: pouchImg,
+    description: '소지품을 깔끔하게 수납할 수 있는 파우치입니다. 부드러운 코튼 소재로 제작되었습니다.',
+    size: '15cm x 12cm',
+    material: 'Cotton',
+    printAreaClass: 'top-[24%] left-[22%] w-[56%] h-[54%] rounded-xl',
     wearImages: []
   },
   { 
@@ -126,10 +134,11 @@ const PRODUCTS = [
     category: 'acc', 
     title: '핸드메이드 티코스터', 
     price: '4,500원', 
-    img: 'https://images.unsplash.com/photo-1610471168199-923f59676e19?auto=format&fit=crop&q=80&w=400',
+    img: coasterImg,
     description: '한 땀 한 땀 손으로 제작한 티코스터입니다. 테이블의 분위기를 따뜻하게 바꿔줍니다.',
     size: '10cm x 10cm',
     material: 'Cotton Thread',
+    printAreaClass: 'top-[18%] left-[18%] w-[64%] h-[64%] rounded-2xl',
     wearImages: []
   }
 ];
@@ -137,6 +146,22 @@ const PRODUCTS = [
 export default function Gallery() {
   const [activeCategory, setActiveCategory] = useState('eco-bag');
   const [selectedProduct, setSelectedProduct] = useState<typeof PRODUCTS[0] | null>(null);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [printFit, setPrintFit] = useState<'cover' | 'contain'>('contain');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result && typeof event.target.result === 'string') {
+          setUploadedImage(event.target.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const filteredProducts = activeCategory === 'all' 
     ? PRODUCTS 
@@ -160,25 +185,85 @@ export default function Gallery() {
           className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start mb-24"
         >
           {/* Left: Preview Section */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             <div className="text-center">
               <h2 className="text-sm font-bold tracking-[0.3em] text-[#8BA8A4] uppercase mb-8">미리보기</h2>
-              <div className="aspect-square bg-white rounded-[3rem] border border-gray-100 shadow-xl overflow-hidden flex items-center justify-center p-8 relative">
+              <div 
+                onClick={() => fileInputRef.current?.click()}
+                className="aspect-square bg-[#F5F5F3] rounded-[3rem] border border-gray-100 shadow-xl overflow-hidden relative cursor-pointer hover:border-[#8BA8A4]/50 transition-all group/preview flex items-center justify-center p-0"
+              >
+                {/* Product base image layer (crisp and high contrast, fully visible) */}
                 <img 
                   src={selectedProduct.img} 
                   alt={selectedProduct.title} 
-                  className="max-w-full max-h-full object-contain opacity-40 mix-blend-multiply" 
+                  className="absolute w-full h-full object-contain transition-transform duration-300 group-hover/preview:scale-[1.02] p-8 pointer-events-none" 
                 />
-                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none opacity-20">
-                   <div className="w-12 h-12 border-2 border-dashed border-[#8BA8A4] rounded-full flex items-center justify-center mb-4">
-                      <span className="text-2xl">+</span>
-                   </div>
-                   <p className="text-[10px] text-[#8BA8A4] tracking-widest uppercase">이미지를 업로드하세요</p>
-                </div>
+
+                {/* The Mockup Layer: Uploaded Design overlay placed exactly over printAreaClass */}
+                {uploadedImage ? (
+                  <div className={`absolute ${selectedProduct.printAreaClass || 'top-[25%] left-[25%] w-[50%] h-[50%]'} pointer-events-none transition-transform duration-300 group-hover/preview:scale-[1.02] overflow-hidden`}>
+                    <img 
+                      src={uploadedImage} 
+                      alt="Uploaded pattern Mockup" 
+                      className={`w-full h-full ${printFit === 'contain' ? 'object-contain' : 'object-cover'} mix-blend-multiply opacity-85 animate-fade-in`} 
+                    />
+                    
+                    {/* Hover indicator for editing */}
+                    <div className="absolute inset-0 bg-black/10 flex items-center justify-center opacity-0 group-hover/preview:opacity-100 transition-opacity">
+                      <div className="bg-[#8BA8A4]/90 backdrop-blur-sm text-white px-4 py-1.5 rounded-full text-[9px] tracking-widest uppercase shadow-sm font-medium">
+                        클릭하여 이미지 교체
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  /* Guided Visual Design Overlay Area when no image is uploaded */
+                  <div className={`absolute ${selectedProduct.printAreaClass || 'top-[25%] left-[25%] w-[50%] h-[50%]'} border-2 border-dashed border-[#8BA8A4]/30 rounded-xl flex flex-col items-center justify-center bg-white/40 backdrop-blur-[1px] hover:bg-white/10 transition-colors pointer-events-none`}>
+                    <span className="text-xl text-[#8BA8A4]/60 font-light mb-1">+</span>
+                    <span className="text-[8px] text-[#8BA8A4]/60 font-medium tracking-widest uppercase">DESIGN AREA</span>
+                  </div>
+                )}
               </div>
             </div>
+
+            {uploadedImage && (
+              <div className="flex justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setPrintFit('contain')}
+                  className={`px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-wider uppercase transition-all shadow-sm ${
+                    printFit === 'contain'
+                      ? 'bg-[#8BA8A4] text-white'
+                      : 'bg-white text-[#8BA8A4] border border-gray-100 hover:bg-gray-50'
+                  }`}
+                >
+                  디자인 맞춤 (Fit)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPrintFit('cover')}
+                  className={`px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-wider uppercase transition-all shadow-sm ${
+                    printFit === 'cover'
+                      ? 'bg-[#8BA8A4] text-white'
+                      : 'bg-white text-[#8BA8A4] border border-gray-100 hover:bg-gray-50'
+                  }`}
+                >
+                  꽉 채우기 (Fill)
+                </button>
+              </div>
+            )}
             
-            <button className="w-full py-5 bg-[#8BA8A4] text-white rounded-2xl font-bold tracking-widest text-sm hover:bg-[#7A9793] transition-all flex items-center justify-center gap-3">
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              onChange={handleFileChange} 
+              accept="image/*" 
+              className="hidden" 
+            />
+
+            <button 
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full py-5 bg-[#8BA8A4] text-white rounded-2xl font-bold tracking-widest text-sm hover:bg-[#7A9793] transition-all flex items-center justify-center gap-3 shadow-md hover:shadow-lg active:scale-[0.99]"
+            >
               <Upload size={18} />
               이미지 업로드 (.JPG / .PNG)
             </button>

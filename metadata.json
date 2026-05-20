@@ -1,6 +1,6 @@
 {
   "name": "Cadeau",
-  "description": "AI-powered personalized fashion design brand that transforms your memories into unique patterns.",
+  "description": "AI-powered personalized fashion design brand that transforms your memories into unique patterns. A high-end experience for custom eco-bags.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
