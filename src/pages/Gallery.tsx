@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Upload, ChevronLeft } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 import logo from '../assets/images/regenerated_image_1778585349920.png';
 import bagImg1 from '../assets/images/regenerated_image_1779258635502.png';
 import bagImg2 from '../assets/images/regenerated_image_1777443639611.png';
@@ -8,10 +9,13 @@ import bagImg3 from '../assets/images/regenerated_image_1777443640441.png';
 import bagImg4 from '../assets/images/regenerated_image_1777443631544.png';
 import bagImg5 from '../assets/images/regenerated_image_1777444452917.png';
 import bagImg6 from '../assets/images/regenerated_image_1777442501187.png';
+import twistEcoBagImg from '../assets/images/regenerated_image_1779260826431.png';
 import wearImg1 from '../assets/images/regenerated_image_1778664513165.png';
 import wearBasicWhite from '../assets/images/wear_basic_white.png';
 import coasterImg from '../assets/images/regenerated_image_1778665142121.png';
 import pouchImg from '../assets/images/regenerated_image_1778663374750.png';
+import pouchDetail1 from '../assets/images/regenerated_image_1778663374750.png';
+import pouchDetail2 from '../assets/images/about_product.png';
 
 const CATEGORIES = [
   { id: 'all', label: '전체' },
@@ -107,14 +111,14 @@ const PRODUCTS = [
   },
   { 
     id: 7, 
-    category: 'acc', 
-    title: '린넨 파우치', 
-    price: '8,000원', 
-    img: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80&w=400',
-    description: '화장품이나 소지품 정리에 좋은 린넨 파우치입니다. 스트링으로 입구를 조절할 수 있습니다.',
-    size: '15cm x 18cm',
-    material: 'Linen 100%',
-    printAreaClass: 'top-[26%] left-[25%] w-[49%] h-[49%] rounded-xl',
+    category: 'eco-bag', 
+    title: '꼬임 에코백', 
+    price: '24,000원', 
+    img: twistEcoBagImg,
+    description: '자연스러운 주름과 유니크한 꼬임 디테일이 매력적인 에코백입니다.\n가볍고 부드러운 코튼 원단 위에 은은한 블루 플로럴 패턴이 프린팅되어 있어 싱그럽고 청량한 무드를 연출합니다.',
+    size: '가로 34cm x 세로 30cm (끈 길이 45cm)',
+    material: 'Cotton 100% (Premium Soft Fabric)',
+    printAreaClass: 'top-[30%] left-[28%] w-[44%] h-[40%] rounded-md',
     wearImages: []
   },
   { 
@@ -127,7 +131,10 @@ const PRODUCTS = [
     size: '15cm x 12cm',
     material: 'Cotton',
     printAreaClass: 'top-[24%] left-[22%] w-[56%] h-[54%] rounded-xl',
-    wearImages: []
+    wearImages: [
+      pouchDetail1,
+      pouchDetail2
+    ]
   },
   { 
     id: 9, 
@@ -144,6 +151,7 @@ const PRODUCTS = [
 ];
 
 export default function Gallery() {
+  const { addToCart } = useCart();
   const [activeCategory, setActiveCategory] = useState('eco-bag');
   const [selectedProduct, setSelectedProduct] = useState<typeof PRODUCTS[0] | null>(null);
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
@@ -304,7 +312,23 @@ export default function Gallery() {
             </div>
 
             <div className="space-y-4 pt-8">
-              <button className="w-full py-6 bg-[#1F2937] text-white rounded-[1.5rem] font-bold text-lg hover:bg-black transition-all shadow-lg hover:shadow-xl translate-y-0 hover:-translate-y-1">
+              <button 
+                onClick={() => {
+                  addToCart({
+                    id: `gallery-${selectedProduct.id}-${uploadedImage ? 'custom' : 'base'}-${Date.now()}`,
+                    productId: selectedProduct.id,
+                    title: selectedProduct.title + (uploadedImage ? ' (맞춤 디자인)' : ''),
+                    price: selectedProduct.price,
+                    img: selectedProduct.img,
+                    customImage: uploadedImage,
+                    printFit: printFit,
+                    printAreaClass: selectedProduct.printAreaClass,
+                    type: 'gallery',
+                    size: selectedProduct.size
+                  });
+                }}
+                className="w-full py-6 bg-[#1F2937] text-white rounded-[1.5rem] font-bold text-lg hover:bg-black transition-all shadow-lg hover:shadow-xl translate-y-0 hover:-translate-y-1"
+              >
                 제작 요청하기 (주문)
               </button>
               <p className="text-[10px] text-center text-[#8BA8A4] tracking-widest uppercase">커스텀 이미지를 포함한 제작이 진행됩니다</p>
@@ -318,11 +342,15 @@ export default function Gallery() {
           whileInView={{ opacity: 1 }}
           className="space-y-24 border-t border-gray-100 pt-24"
         >
-          {/* Wearing Images */}
+          {/* Wearing Images / Detailed Images */}
           <div className="space-y-12">
             <div className="text-center space-y-2">
-              <span className="text-[10px] uppercase tracking-[0.3em] font-semibold text-[#8BA8A4]">Lookbook</span>
-              <h2 className="text-3xl font-serif italic text-[#4A4A4A]">제품 착용</h2>
+              <span className="text-[10px] uppercase tracking-[0.3em] font-semibold text-[#8BA8A4]">
+                {selectedProduct.category === 'acc' ? 'Detail View' : 'Lookbook'}
+              </span>
+              <h2 className="text-3xl font-serif italic text-[#4A4A4A]">
+                {selectedProduct.category === 'acc' ? '상세 이미지' : '제품 착용'}
+              </h2>
             </div>
             
             <div className="space-y-16 flex flex-col items-center">
@@ -332,14 +360,14 @@ export default function Gallery() {
                     <img 
                       src={img} 
                       className="w-full h-auto block" 
-                      alt={`${selectedProduct.title} look ${i + 1}`}
+                      alt={`${selectedProduct.title} detail ${i + 1}`}
                       referrerPolicy="no-referrer"
                     />
                   </div>
                 ))
               ) : (
                 <div className="w-full aspect-video rounded-[2rem] bg-[#F9F6F1] flex items-center justify-center text-[#8BA8A4] italic">
-                   착용 이미지가 준비 중입니다.
+                   {selectedProduct.category === 'acc' ? '상세 이미지가 준비 중입니다.' : '착용 이미지가 준비 중입니다.'}
                 </div>
               )}
             </div>

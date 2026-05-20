@@ -2,6 +2,8 @@ import { ReactNode, useState } from 'react';
 import { motion } from 'motion/react';
 import { Heart, ShoppingBag, User, Sparkles, Menu, X } from 'lucide-react';
 import logo from '../assets/images/regenerated_image_1778585349920.png';
+import { useCart } from '../context/CartContext';
+import CartDrawer from './CartDrawer';
 
 interface LayoutProps {
   children: ReactNode;
@@ -11,6 +13,7 @@ interface LayoutProps {
 
 export default function Layout({ children, currentPage, setCurrentPage }: LayoutProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { itemCount, isCartOpen, setIsCartOpen } = useCart();
 
   const navItems = [
     { id: 'home', label: 'HOME' },
@@ -63,8 +66,17 @@ export default function Layout({ children, currentPage, setCurrentPage }: Layout
             <button id="nav-search" className="hover:opacity-60 transition-opacity">
               <Sparkles size={20} strokeWidth={1.5} />
             </button>
-            <button id="nav-cart" className="hover:opacity-60 transition-opacity">
+            <button 
+              id="nav-cart" 
+              onClick={() => setIsCartOpen(!isCartOpen)} 
+              className="hover:opacity-60 transition-opacity relative"
+            >
               <ShoppingBag size={20} strokeWidth={1.5} />
+              {itemCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-[#2C2C2C] text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center font-bold font-mono">
+                  {itemCount}
+                </span>
+              )}
             </button>
             <button 
                 id="nav-profile" 
@@ -127,6 +139,7 @@ export default function Layout({ children, currentPage, setCurrentPage }: Layout
           <span>Privacy & Terms</span>
         </div>
       </footer>
+      <CartDrawer onClose={() => setIsCartOpen(false)} setCurrentPage={setCurrentPage} />
     </div>
   );
 }

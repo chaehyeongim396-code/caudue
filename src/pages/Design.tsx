@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Upload, X, Sparkles, RefreshCw, ChevronLeft, ChevronRight, Check, Heart } from 'lucide-react';
 import { generatePatternFromMemory, PatternDesign } from '../services/geminiService';
+import { useCart } from '../context/CartContext';
 import logo from '../assets/images/regenerated_image_1778585349920.png';
 
 const STYLES = [
@@ -12,6 +13,7 @@ const STYLES = [
 ];
 
 export default function Design() {
+  const { addToCart } = useCart();
   const [step, setStep] = useState(1);
   const [textInput, setTextInput] = useState('');
   const [selectedStyle, setSelectedStyle] = useState('romantic');
@@ -272,6 +274,20 @@ export default function Design() {
                     
                     <button
                       id="buy-btn"
+                      onClick={() => {
+                        if (result) {
+                          addToCart({
+                            id: `custom-${result.title.replace(/\s+/g, '-')}-${Date.now()}`,
+                            title: result.title + ' (맞춤 제작 에코백)',
+                            price: '245,000원',
+                            img: '',
+                            colors: result.colors,
+                            story: result.story,
+                            type: 'custom',
+                            size: '가로 36cm x 세로 40cm'
+                          });
+                        }
+                      }}
                       className="w-full bg-[#2C2C2C] text-white py-5 rounded-full text-xs font-medium tracking-[0.2em] transition-all hover:scale-[1.02]"
                     >
                       제작 요청하기 (주문)
