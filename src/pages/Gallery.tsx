@@ -9,11 +9,9 @@ import bagImg3 from '../assets/images/regenerated_image_1777443640441.png';
 import bagImg4 from '../assets/images/regenerated_image_1777443631544.png';
 import bagImg6 from '../assets/images/regenerated_image_1777442501187.png';
 import twistEcoBagImg from '../assets/images/regenerated_image_1779260826431.png';
-import wearClassicCanvas from '../assets/images/wear_classic_canvas.png';
 import wearLinenShoulder from '../assets/images/wear_linen_shoulder.png';
 import wearMiniDaily from '../assets/images/wear_mini_daily.png';
 import wearCloudBag from '../assets/images/wear_cloud_bag.png';
-import wearBasicTote from '../assets/images/wear_basic_tote.png';
 import wearTwistEco from '../assets/images/wear_twist_eco.png';
 import wearTwistEco2 from '../assets/images/wear_twist_eco_2.png';
 import wearPouch from '../assets/images/wear_pouch.png';
@@ -42,7 +40,7 @@ const PRODUCTS = [
     material: 'Cotton 100% (10oz Canvas)',
     printAreaClass: 'top-[31%] left-[24%] w-[51%] h-[44%] rounded-sm',
     wearImages: [
-      wearClassicCanvas
+      'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=800'
     ]
   },
   { 
@@ -98,7 +96,7 @@ const PRODUCTS = [
     material: 'Natural Cotton 100%',
     printAreaClass: 'top-[29%] left-[23%] w-[54%] h-[49%] rounded-sm',
     wearImages: [
-      wearBasicTote
+      'https://images.unsplash.com/photo-1600857062241-98e5dba7f214?auto=format&fit=crop&q=80&w=800'
     ]
   },
   { 
