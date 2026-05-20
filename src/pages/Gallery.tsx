@@ -158,6 +158,11 @@ export default function Gallery() {
   const [printFit, setPrintFit] = useState<'cover' | 'contain'>('contain');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const handleSelectProduct = (product: typeof PRODUCTS[0] | null) => {
+    setSelectedProduct(product);
+    window.scrollTo({ top: 0 });
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -179,7 +184,7 @@ export default function Gallery() {
     return (
       <div className="max-w-7xl mx-auto px-6 py-12">
         <button 
-          onClick={() => setSelectedProduct(null)}
+          onClick={() => handleSelectProduct(null)}
           className="flex items-center gap-2 text-[#8BA8A4] text-xs font-medium hover:text-[#4A4A4A] transition-colors mb-8"
         >
           <ChevronLeft size={16} />
@@ -300,7 +305,7 @@ export default function Gallery() {
                 {PRODUCTS.filter(p => p.category === activeCategory).slice(0, 10).map((p) => (
                   <button 
                     key={p.id}
-                    onClick={() => setSelectedProduct(p)}
+                    onClick={() => handleSelectProduct(p)}
                     className={`aspect-square rounded-xl border-2 transition-all p-1 flex items-center justify-center overflow-hidden bg-white ${
                       selectedProduct.id === p.id ? 'border-[#8BA8A4] bg-white' : 'border-transparent hover:border-gray-200'
                     }`}
@@ -463,7 +468,7 @@ export default function Gallery() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.3 }}
-              onClick={() => setSelectedProduct(item)}
+              onClick={() => handleSelectProduct(item)}
               className="group cursor-pointer"
             >
               <div className="bg-[#F9F6F1] rounded-[2rem] p-4 aspect-[4/5] flex flex-col items-center justify-center gap-6 overflow-hidden border border-transparent group-hover:border-[#E8DCC4] transition-all">
