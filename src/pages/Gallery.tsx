@@ -1,21 +1,28 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Upload, ChevronLeft } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import logo from '../assets/images/regenerated_image_1778585349920.png';
-import bagImg1 from '../assets/images/regenerated_image_1779258635502.png';
-import bagImg2 from '../assets/images/regenerated_image_1777443639611.png';
+import bagImg1 from '../assets/images/original_classic_canvas.png';
+import bagImg2 from '../assets/images/original_linen_shoulder.png';
 import bagImg3 from '../assets/images/regenerated_image_1777443640441.png';
 import bagImg4 from '../assets/images/regenerated_image_1777443631544.png';
-import bagImg5 from '../assets/images/regenerated_image_1777444452917.png';
 import bagImg6 from '../assets/images/regenerated_image_1777442501187.png';
 import twistEcoBagImg from '../assets/images/regenerated_image_1779260826431.png';
-import wearImg1 from '../assets/images/regenerated_image_1778664513165.png';
-import wearBasicWhite from '../assets/images/wear_basic_white.png';
+import wearClassicCanvas from '../assets/images/wear_classic_canvas.png';
+import wearLinenShoulder from '../assets/images/wear_linen_shoulder.png';
+import wearMiniDaily from '../assets/images/wear_mini_daily.png';
+import wearCloudBag from '../assets/images/wear_cloud_bag.png';
+import wearBasicTote from '../assets/images/wear_basic_tote.png';
+import wearTwistEco from '../assets/images/wear_twist_eco.png';
+import wearTwistEco2 from '../assets/images/wear_twist_eco_2.png';
+import wearPouch from '../assets/images/wear_pouch.png';
+import wearPouch2 from '../assets/images/wear_pouch_2.png';
+import wearCoaster from '../assets/images/wear_coaster.png';
+import wearCoaster2 from '../assets/images/wear_coaster_2.png';
+import wearCoaster3 from '../assets/images/wear_coaster_3.png';
 import coasterImg from '../assets/images/regenerated_image_1778665142121.png';
 import pouchImg from '../assets/images/regenerated_image_1778663374750.png';
-import pouchDetail1 from '../assets/images/regenerated_image_1778663374750.png';
-import pouchDetail2 from '../assets/images/about_product.png';
 
 const CATEGORIES = [
   { id: 'all', label: '전체' },
@@ -35,7 +42,7 @@ const PRODUCTS = [
     material: 'Cotton 100% (10oz Canvas)',
     printAreaClass: 'top-[31%] left-[24%] w-[51%] h-[44%] rounded-sm',
     wearImages: [
-      wearImg1
+      wearClassicCanvas
     ]
   },
   { 
@@ -49,8 +56,7 @@ const PRODUCTS = [
     material: 'Linen 55% Cotton 45%',
     printAreaClass: 'top-[35%] left-[25%] w-[49%] h-[38%] rounded-sm',
     wearImages: [
-      'https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6?auto=format&fit=crop&q=80&w=600',
-      'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&q=80&w=600'
+      wearLinenShoulder
     ]
   },
   { 
@@ -64,49 +70,35 @@ const PRODUCTS = [
     material: 'Cotton 100%',
     printAreaClass: 'top-[33%] left-[27%] w-[46%] h-[40%] rounded-md',
     wearImages: [
-      'https://images.unsplash.com/photo-1544816153-12ad5d7140a1?auto=format&fit=crop&q=80&w=600'
+      wearMiniDaily
     ]
   },
   { 
     id: 4, 
     category: 'eco-bag', 
-    title: '캔버스 포켓 에코백', 
+    title: '클라우드백', 
     price: '19,000원', 
     img: bagImg4,
-    description: '외부에 큰 포켓이 있어 실용성을 높인 디자인입니다.\n넉넉한 수납공간으로 보조 가방이나 장바구니로도 훌륭합니다.',
+    description: '구름처럼 부드럽고 가벼운 실루엣의 숄더백입니다.\n넉넉한 수납공간과 유연하게 흐르는 핏으로 일상의 편안함을 더해줍니다.',
     size: '가로 42cm x 세로 38cm x 폭 10cm',
-    material: 'Cotton 100% (High Density)',
+    material: 'Soft Nylon 100%',
     printAreaClass: 'top-[36%] left-[23%] w-[53%] h-[36%] rounded-sm',
     wearImages: [
-      'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&q=80&w=600'
-    ]
-  },
-  { 
-    id: 5, 
-    category: 'eco-bag', 
-    title: '스트라이프 코튼백', 
-    price: '16,000원', 
-    img: bagImg5,
-    description: '청량감 있는 스트라이프 패턴이 포인트가 되는 코튼백입니다.\n캐주얼한 룩에 경쾌함을 더해줍니다.',
-    size: '가로 35cm x 세로 38cm',
-    material: 'Yarn-dyed Cotton 100%',
-    printAreaClass: 'top-[32%] left-[24%] w-[51%] h-[44%] rounded-sm',
-    wearImages: [
-      'https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6?auto=format&fit=crop&q=80&w=600'
+      wearCloudBag
     ]
   },
   { 
     id: 6, 
     category: 'eco-bag', 
-    title: '베이직 화이트', 
+    title: '베이직 토트백', 
     price: '13,000원', 
     img: bagImg6,
-    description: '깨끗한 화이트 컬러의 정석 에코백입니다.\n어떠한 전사나 인쇄에도 방해받지 않는 순수한 화이트 캔버스입니다.',
+    description: '심플하고 군더더기 없는 디자인의 베이직 토트백입니다.\n탄탄한 캔버스 원단으로 제작되어 데일리 수납에 용이하며, 어떤 커스텀 패턴과도 내추럴하게 어울립니다.',
     size: '가로 36cm x 세로 40cm',
-    material: 'Bleached Cotton 100%',
+    material: 'Natural Cotton 100%',
     printAreaClass: 'top-[29%] left-[23%] w-[54%] h-[49%] rounded-sm',
     wearImages: [
-      wearBasicWhite
+      wearBasicTote
     ]
   },
   { 
@@ -115,11 +107,14 @@ const PRODUCTS = [
     title: '꼬임 에코백', 
     price: '24,000원', 
     img: twistEcoBagImg,
-    description: '자연스러운 주름과 유니크한 꼬임 디테일이 매력적인 에코백입니다.\n가볍고 부드러운 코튼 원단 위에 은은한 블루 플로럴 패턴이 프린팅되어 있어 싱그럽고 청량한 무드를 연출합니다.',
+    description: '자연스러운 주름과 유니크한 꼬임 디테일이 매력적인 에코백입니다.',
     size: '가로 34cm x 세로 30cm (끈 길이 45cm)',
     material: 'Cotton 100% (Premium Soft Fabric)',
     printAreaClass: 'top-[30%] left-[28%] w-[44%] h-[40%] rounded-md',
-    wearImages: []
+    wearImages: [
+      wearTwistEco,
+      wearTwistEco2
+    ]
   },
   { 
     id: 8, 
@@ -132,8 +127,8 @@ const PRODUCTS = [
     material: 'Cotton',
     printAreaClass: 'top-[24%] left-[22%] w-[56%] h-[54%] rounded-xl',
     wearImages: [
-      pouchDetail1,
-      pouchDetail2
+      wearPouch,
+      wearPouch2
     ]
   },
   { 
@@ -146,13 +141,33 @@ const PRODUCTS = [
     size: '10cm x 10cm',
     material: 'Cotton Thread',
     printAreaClass: 'top-[18%] left-[18%] w-[64%] h-[64%] rounded-2xl',
-    wearImages: []
+    wearImages: [
+      wearCoaster,
+      wearCoaster2,
+      wearCoaster3
+    ]
   }
 ];
 
-export default function Gallery() {
+interface GalleryProps {
+  initialCategory?: string;
+  onCategoryChange?: (category: string) => void;
+}
+
+export default function Gallery({ initialCategory = 'eco-bag', onCategoryChange }: GalleryProps) {
   const { addToCart } = useCart();
-  const [activeCategory, setActiveCategory] = useState('eco-bag');
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
+
+  useEffect(() => {
+    setActiveCategory(initialCategory);
+  }, [initialCategory]);
+
+  const handleCategoryChange = (category: string) => {
+    setActiveCategory(category);
+    if (onCategoryChange) {
+      onCategoryChange(category);
+    }
+  };
   const [selectedProduct, setSelectedProduct] = useState<typeof PRODUCTS[0] | null>(null);
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [printFit, setPrintFit] = useState<'cover' | 'contain'>('contain');
@@ -361,7 +376,7 @@ export default function Gallery() {
             <div className="space-y-16 flex flex-col items-center">
               {selectedProduct.wearImages.length > 0 ? (
                 selectedProduct.wearImages.map((img, i) => (
-                  <div key={i} className="w-full md:max-w-4xl rounded-[2.5rem] md:rounded-[4rem] overflow-hidden bg-[#F9F6F1] shadow-2xl transition-all duration-500 hover:shadow-3xl">
+                  <div key={i} className="w-full md:max-w-4xl rounded-[2.5rem] md:rounded-[4rem] overflow-hidden bg-[#F9F6F1] shadow-2xl transition-all duration-500 hover:shadow-3xl relative">
                     <img 
                       src={img} 
                       className="w-full h-auto block" 
@@ -445,7 +460,7 @@ export default function Gallery() {
           {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
+              onClick={() => handleCategoryChange(cat.id)}
               className={`px-8 py-2.5 rounded-full text-xs font-medium tracking-[0.1em] transition-all duration-300 ${
                 activeCategory === cat.id 
                   ? 'bg-[#8BA8A4]/40 text-[#4A4A4A]' 

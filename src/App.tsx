@@ -14,16 +14,27 @@ import Profile from './pages/Profile';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
+  const [selectedCategory, setSelectedCategory] = useState('eco-bag');
 
   // Simple scroll to top on page change
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currentPage]);
 
+  const handleNavigateToShop = (category: string) => {
+    setSelectedCategory(category);
+    setCurrentPage('gallery');
+  };
+
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
-        return <Home onStartDesign={() => setCurrentPage('design')} />;
+        return (
+          <Home 
+            onStartDesign={() => setCurrentPage('design')} 
+            onNavigateToShop={handleNavigateToShop} 
+          />
+        );
       case 'about':
         return <About />;
       case 'archive':
@@ -31,16 +42,35 @@ export default function App() {
       case 'design':
         return <Design />;
       case 'gallery':
-        return <Gallery />;
+        return (
+          <Gallery 
+            initialCategory={selectedCategory} 
+            onCategoryChange={setSelectedCategory} 
+          />
+        );
       case 'profile':
-        return <Profile />;
+        return <Profile onStartDesign={() => setCurrentPage('design')} />;
       default:
-        return <Home onStartDesign={() => setCurrentPage('design')} />;
+        return (
+          <Home 
+            onStartDesign={() => setCurrentPage('design')} 
+            onNavigateToShop={handleNavigateToShop} 
+          />
+        );
     }
   };
 
   return (
-    <Layout currentPage={currentPage} setCurrentPage={setCurrentPage}>
+    <Layout 
+      currentPage={currentPage} 
+      setCurrentPage={(page) => {
+        if (page === 'gallery') {
+          // Default to 'all' or keep previous when visiting SHOP via navbar
+          setSelectedCategory('all');
+        }
+        setCurrentPage(page);
+      }}
+    >
       {renderPage()}
     </Layout>
   );

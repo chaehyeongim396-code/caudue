@@ -8,7 +8,7 @@ import sampleImg4 from '../assets/images/regenerated_image_1778577242626.png';
 import sampleImg5 from '../assets/images/regenerated_image_1778577357126.png';
 import sampleImg6 from '../assets/images/regenerated_image_1778577360113.png';
 
-const SAMPLES = [
+export const SAMPLES = [
   { id: 1, title: '별빛 햄스터', author: '강서윤', img: sampleImg1, likes: 124 },
   { id: 2, title: '들판 위의 토끼', author: '이민수', img: sampleImg2, likes: 89 },
   { id: 3, title: '몽글몽글 구름', author: '박지혜', img: sampleImg3, likes: 210 },
@@ -18,6 +18,49 @@ const SAMPLES = [
 ];
 
 const Archive: React.FC = () => {
+  const [items, setItems] = React.useState(
+    SAMPLES.map(item => ({ ...item, liked: false }))
+  );
+
+  React.useEffect(() => {
+    try {
+      const likedIdsStr = localStorage.getItem('cadeau_liked_patterns');
+      const likedIds = likedIdsStr ? JSON.parse(likedIdsStr) : [];
+      setItems(prev => prev.map(item => ({
+        ...item,
+        liked: likedIds.includes(item.id),
+        likes: likedIds.includes(item.id) ? item.likes + 1 : item.likes
+      })));
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
+  const toggleLike = (id: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setItems(prev => {
+      const updated = prev.map(item => {
+        if (item.id === id) {
+          return {
+            ...item,
+            liked: !item.liked,
+            likes: item.liked ? item.likes - 1 : item.likes + 1,
+          };
+        }
+        return item;
+      });
+
+      try {
+        const likedIds = updated.filter(item => item.liked).map(item => item.id);
+        localStorage.setItem('cadeau_liked_patterns', JSON.stringify(likedIds));
+      } catch (err) {
+        console.error(err);
+      }
+
+      return updated;
+    });
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-6 py-12">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16">
@@ -41,7 +84,7 @@ const Archive: React.FC = () => {
       </div>
 
       <div className="columns-1 sm:columns-2 lg:columns-3 gap-8 space-y-8">
-        {SAMPLES.map((item) => (
+        {items.map((item) => (
           <motion.div 
             key={item.id}
             initial={{ opacity: 0, y: 20 }}
@@ -53,16 +96,30 @@ const Archive: React.FC = () => {
             <div className="relative rounded-[2rem] overflow-hidden mb-4 shadow-sm border border-transparent group-hover:border-[#E8DCC4] transition-all">
               <img src={item.img} alt={item.title} className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105" />
               <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
-                <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#2C2C2C] shadow-lg">
-                  <Heart size={16} />
+                <button 
+                  onClick={(e) => toggleLike(item.id, e)}
+                  className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#2C2C2C] shadow-lg transition-transform active:scale-90"
+                >
+                  <Heart 
+                    size={16} 
+                    fill={item.liked ? "#FF5A5F" : "none"} 
+                    className={item.liked ? "text-[#FF5A5F]" : "text-[#2C2C2C]"} 
+                  />
                 </button>
               </div>
             </div>
             <div className="px-4 flex justify-end items-center">
-              <div className="flex items-center gap-1 opacity-40">
-                <Heart size={10} />
-                <span className="text-[10px] font-mono">{item.likes}</span>
-              </div>
+              <button 
+                onClick={(e) => toggleLike(item.id, e)}
+                className="flex items-center gap-1 opacity-60 hover:opacity-100 transition-opacity"
+              >
+                <Heart 
+                  size={10} 
+                  fill={item.liked ? "#FF5A5F" : "none"} 
+                  className={item.liked ? "text-[#FF5A5F]" : "text-[#7D7D7D]"} 
+                />
+                <span className="text-[10px] font-mono text-[#7D7D7D]">{item.likes}</span>
+              </button>
             </div>
           </motion.div>
         ))}

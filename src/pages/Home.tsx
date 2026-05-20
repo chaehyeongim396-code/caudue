@@ -1,12 +1,15 @@
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import bagImg1 from '../assets/images/regenerated_image_1779258635502.png';
+import bagImg2 from '../assets/images/regenerated_image_1777443639611.png';
+import propImg2 from '../assets/images/regenerated_image_1779268495494.png';
 
 interface HomeProps {
   onStartDesign: () => void;
+  onNavigateToShop: (category: string) => void;
 }
 
-export default function Home({ onStartDesign }: HomeProps) {
+export default function Home({ onStartDesign, onNavigateToShop }: HomeProps) {
   return (
     <div className="px-6 box-border bg-[#dbe8e7]">
       {/* Hero Section */}
@@ -69,18 +72,25 @@ export default function Home({ onStartDesign }: HomeProps) {
             <span className="text-[10px] uppercase tracking-[0.3em] font-semibold opacity-40 mb-2 block">Collections</span>
             <h2 className="text-3xl font-serif italic">더 캔버스</h2>
           </div>
-          <button className="text-[10px] uppercase tracking-[0.2em] border-b border-[#2C2C2C] pb-1 hover:opacity-60 transition-opacity font-medium" style={{ fontFamily: 'Georgia, serif' }}>전체보기</button>
+          <button 
+            onClick={() => onNavigateToShop('all')}
+            className="text-[10px] uppercase tracking-[0.2em] border-b border-[#2C2C2C] pb-1 hover:opacity-60 transition-opacity font-medium" 
+            style={{ fontFamily: 'Georgia, serif' }}
+          >
+            전체보기
+          </button>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
-            { title: '가방', img: bagImg1, category: 'Bags' },
-            { title: '포켓 파우치', img: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&q=80&w=600', category: '소품' },
-            { title: '캔버스 토트', img: '/regenerated_image_1777443639611.png', category: 'Accessories' }
+            { title: '에코백', img: bagImg1, category: 'ECO BAG', shopCategory: 'eco-bag' },
+            { title: '소품', img: propImg2, category: 'ACCESSORIES', shopCategory: 'acc' },
+            { title: '소품', img: bagImg2, category: 'ACCESSORIES', shopCategory: 'acc' }
           ].map((item, i) => (
             <motion.div 
               key={i}
               whileHover={{ y: -10 }}
+              onClick={() => onNavigateToShop(item.shopCategory)}
               className="group cursor-pointer"
             >
               <div className="aspect-[3/4] rounded-2xl overflow-hidden mb-6 bg-[#F9F6F1]">
@@ -109,11 +119,40 @@ export default function Home({ onStartDesign }: HomeProps) {
             viewport={{ once: true }}
             className="space-y-8"
           >
-            <span className="text-[10px] uppercase tracking-[0.4em] font-semibold opacity-40" style={{ backgroundColor: '#f8f5ec', color: '#000000' }}>브랜드 철학</span>
-            <p className="text-2xl md:text-4xl font-serif italic leading-relaxed" style={{ backgroundColor: '#f8f5ec', color: '#000000' }}>
-              "우리는 패션이 우리의 영혼을 비추는 거울이어야 한다고 믿습니다. 단순한 트렌드가 아닌, 우리를 만든 이야기들을 담아야 합니다."
+            
+            <div className="space-y-4 text-base md:text-lg text-gray-700 leading-relaxed font-normal break-keep">
+              <p className="max-w-4xl mx-auto px-4">
+                <span className="md:block md:whitespace-nowrap mb-1 md:mb-0">
+                  <span className="inline-block">우리의 스마트폰 속에는</span>{" "}
+                  <span className="inline-block">수천 장의 사진이 잠들어 있습니다.</span>
+                </span>
+                <span className="md:block md:whitespace-nowrap mb-1 md:mb-0">
+                  <span className="inline-block">사랑하는 사람의 미소,</span>{" "}
+                  <span className="inline-block">여행지의 낯선 공기, 혹은</span>{" "}
+                  <span className="inline-block">노을이 지던 어느 날의 이름 모를 골목까지.</span>
+                </span>
+                <span className="md:block md:whitespace-nowrap">
+                  <span className="inline-block">하지만 그 소중한 기억들은</span>{" "}
+                  <span className="inline-block">시간이 흐름에 따라 서서히 잊히곤 합니다.</span>
+                </span>
+              </p>
+              <p className="pt-4 text-sm font-medium tracking-wide text-gray-500">
+                Cadeau는 질문했습니다.
+              </p>
+            </div>
+
+            <p className="text-xl md:text-3xl font-serif italic leading-relaxed pt-2 text-[#2C2C2C] max-w-4xl mx-auto break-keep px-4">
+              <span className="md:block md:whitespace-nowrap mb-2 md:mb-0">
+                <span className="inline-block">"당신의 가장 찬란했던 순간을</span>{" "}
+                <span className="inline-block">일상 속에서 만질 수 있고,</span>
+              </span>
+              <span className="md:block md:whitespace-nowrap">
+                <span className="inline-block">입을 수 있는 예술로</span>{" "}
+                <span className="inline-block">바꿀 수 있다면 어떨까?"</span>
+              </span>
             </p>
-            <div className="w-px h-16 bg-[#000000]/20 mx-auto"></div>
+
+            <div className="w-px h-16 bg-[#000000]/20 mx-auto pt-4"></div>
           </motion.div>
         </div>
       </section>

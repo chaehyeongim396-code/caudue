@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { motion } from 'motion/react';
-import { Heart, ShoppingBag, User, Sparkles, Menu, X } from 'lucide-react';
+import { Heart, ShoppingBag, User, Menu, X } from 'lucide-react';
 import logo from '../assets/images/regenerated_image_1778585349920.png';
 import { useCart } from '../context/CartContext';
 import CartDrawer from './CartDrawer';
@@ -63,9 +63,6 @@ export default function Layout({ children, currentPage, setCurrentPage }: Layout
           </button>
 
           <div className="flex gap-6 items-center">
-            <button id="nav-search" className="hover:opacity-60 transition-opacity">
-              <Sparkles size={20} strokeWidth={1.5} />
-            </button>
             <button 
               id="nav-cart" 
               onClick={() => setIsCartOpen(!isCartOpen)} 

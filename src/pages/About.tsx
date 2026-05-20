@@ -26,7 +26,7 @@ const About: React.FC = () => {
             </p>
             
             {/* Dots */}
-            <div className="flex gap-2.5">
+            <div className="flex gap-2.5 mt-8">
               <div className="w-2 h-2 rounded-full bg-[#8BA8A4]" />
               <div className="w-2 h-2 rounded-full bg-[#8BA8A4]/20" />
               <div className="w-2 h-2 rounded-full bg-[#8BA8A4]/20" />
@@ -44,15 +44,17 @@ const About: React.FC = () => {
                viewport={{ once: true }}
                className="relative z-10 space-y-8 py-16 bg-white rounded-[4rem] border border-[#8BA8A4]/10 shadow-2xl shadow-teal-900/5 px-8 md:px-20"
              >
-                <h2 className="text-xl md:text-2xl font-bold text-[#333333] tracking-tight">
-                  "당신의 기억이 세상에 하나뿐인 디자인이 됩니다."
+                <h2 className="text-xl md:text-2xl font-bold text-[#333333] tracking-tight whitespace-pre-line leading-relaxed">
+                  {"\"세상에 단 하나뿐인 디자인,\n그리고 그 안에 담긴 단 하나뿐인 당신의 이야기.\""}
                 </h2>
                 <div className="max-w-3xl mx-auto space-y-4 text-[#666666] leading-relaxed font-normal text-sm md:text-base">
                   <p>
-                    사용자의 소중한 추억과 특별한 경험을 AI 알고리즘을 통해 독창적인 패턴으로 시각화합니다.
+                    어느 순간은 너무 빠르게 지나가서, 붙잡을 수 없다는 것이 아쉬울 때가 있습니다.
+                    <br />
+                    기억으로만 간직하기엔 흐려질까 두려운 그런 순간들.
                   </p>
-                  <p className="md:whitespace-nowrap">
-                    Cadeau는 단순한 패션 아이템을 넘어, 당신의 이야기를 담은 가장 개인적인 선물을 제안합니다.
+                  <p className="mt-4">
+                    Cadeau는 그 찰나를 놓치지 않기 위해 시작되었습니다.
                   </p>
                 </div>
              </motion.div>
