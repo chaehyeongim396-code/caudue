@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import dotenv from "dotenv";
+import fs from "fs";
 import { GoogleGenAI, Type } from "@google/genai";
 
 dotenv.config();
@@ -97,7 +98,9 @@ async function startServer() {
     }
   });
 
-  let isProduction = process.env.NODE_ENV === "production" || process.env.ENV === "production";
+  const distPath = path.join(process.cwd(), "dist");
+  const hasDist = fs.existsSync(distPath);
+  let isProduction = process.env.NODE_ENV === "production" || process.env.ENV === "production" || hasDist;
 
   // Vite middleware for development
   if (!isProduction) {
@@ -110,14 +113,13 @@ async function startServer() {
       });
       app.use(vite.middlewares);
     } catch (e) {
-      console.warn("Vite not found or failed to start, falling back to static serving if dist exists.");
+      console.warn("Vite not found or failed to start, falling back to static serving as dist exists.");
       isProduction = true; // Fallback to production mode behavior
     }
   }
 
   if (isProduction) {
     console.log("Starting in production mode...");
-    const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
     app.get("*", (req, res) => {
       const indexPath = path.join(distPath, "index.html");

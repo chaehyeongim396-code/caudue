@@ -10,6 +10,8 @@ import bagImg4 from '../assets/images/regenerated_image_1777443631544.png';
 import bagImg6 from '../assets/images/regenerated_image_1777442501187.png';
 import twistEcoBagImg from '../assets/images/regenerated_image_1779260826431.png';
 import wearLinenShoulder from '../assets/images/wear_linen_shoulder.png';
+import wearClassicCanvas from '../assets/images/assets/wear_classic_canvas-C39h55ke.png';
+import wearBasicTote from '../assets/images/regenerated_image_1779689580045.png';
 import wearMiniDaily from '../assets/images/wear_mini_daily.png';
 import wearCloudBag from '../assets/images/wear_cloud_bag.png';
 import wearTwistEco from '../assets/images/wear_twist_eco.png';
@@ -40,7 +42,7 @@ const PRODUCTS = [
     material: 'Cotton 100% (10oz Canvas)',
     printAreaClass: 'top-[31%] left-[24%] w-[51%] h-[44%] rounded-sm',
     wearImages: [
-      'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=800'
+      wearClassicCanvas
     ]
   },
   { 
@@ -96,7 +98,7 @@ const PRODUCTS = [
     material: 'Natural Cotton 100%',
     printAreaClass: 'top-[29%] left-[23%] w-[54%] h-[49%] rounded-sm',
     wearImages: [
-      'https://images.unsplash.com/photo-1600857062241-98e5dba7f214?auto=format&fit=crop&q=80&w=800'
+      wearBasicTote
     ]
   },
   { 
@@ -147,6 +149,268 @@ const PRODUCTS = [
   }
 ];
 
+function generateCleanShadowMap(imgSrc: string): Promise<{ mask: string; shadow: string }> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      const width = img.width;
+      const height = img.height;
+      
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        resolve({ mask: imgSrc, shadow: imgSrc });
+        return;
+      }
+      ctx.drawImage(img, 0, 0);
+      
+      const imgData = ctx.getImageData(0, 0, width, height);
+      const data = imgData.data;
+      
+      // 1. Calculate average background color from the corner pixels of the image
+      const corners = [
+        0,                      // top-left
+        width - 1,              // top-right
+        (height - 1) * width,   // bottom-left
+        width * height - 1      // bottom-right
+      ];
+      let bgSumR = 0, bgSumG = 0, bgSumB = 0, bgCount = 0;
+      corners.forEach(idx => {
+        const pIdx = idx * 4;
+        if (data[pIdx + 3] >= 150) { // must be mostly opaque to use as color reference
+          bgSumR += data[pIdx];
+          bgSumG += data[pIdx + 1];
+          bgSumB += data[pIdx + 2];
+          bgCount++;
+        }
+      });
+      
+      const hasBgColor = bgCount > 0;
+      const refBgR = hasBgColor ? Math.round(bgSumR / bgCount) : 245;
+      const refBgG = hasBgColor ? Math.round(bgSumG / bgCount) : 245;
+      const refBgB = hasBgColor ? Math.round(bgSumB / bgCount) : 245;
+
+      // BFS index-based queue flood fill to detect background
+      const visited = new Uint8Array(width * height);
+      const isBg = new Uint8Array(width * height);
+      const queue = new Int32Array(width * height);
+      let head = 0;
+      let tail = 0;
+      
+      // 2. Seed any pixels that are transparent (alpha < 150) OR extremely close to the background color
+      // This ensures solid/opaque background areas inside the handle loops are seeded as backgrounds
+      for (let i = 0; i < width * height; i++) {
+        const pIdx = i * 4;
+        const r = data[pIdx];
+        const g = data[pIdx + 1];
+        const b = data[pIdx + 2];
+        const a = data[pIdx + 3];
+        
+        const isTransparent = a < 150;
+        const isBgColor = Math.abs(r - refBgR) < 10 && Math.abs(g - refBgG) < 10 && Math.abs(b - refBgB) < 10;
+        
+        if (isTransparent || isBgColor) {
+          visited[i] = 1;
+          queue[tail++] = i;
+        }
+      }
+      
+      // 3. Seed the border pixels (to capture any remaining non-transparent background borders)
+      for (let x = 0; x < width; x++) {
+        const idxTop = 0 * width + x;
+        if (!visited[idxTop]) {
+          visited[idxTop] = 1;
+          queue[tail++] = idxTop;
+        }
+        
+        const idxBottom = (height - 1) * width + x;
+        if (!visited[idxBottom]) {
+          visited[idxBottom] = 1;
+          queue[tail++] = idxBottom;
+        }
+      }
+      for (let y = 1; y < height - 1; y++) {
+        const idxLeft = y * width + 0;
+        if (!visited[idxLeft]) {
+          visited[idxLeft] = 1;
+          queue[tail++] = idxLeft;
+        }
+        
+        const idxRight = y * width + (width - 1);
+        if (!visited[idxRight]) {
+          visited[idxRight] = 1;
+          queue[tail++] = idxRight;
+        }
+      }
+      
+      while (head < tail) {
+        const idx = queue[head++];
+        const cx = idx % width;
+        const cy = Math.floor(idx / width);
+        const pIdx = idx * 4;
+        
+        const r = data[pIdx];
+        const g = data[pIdx + 1];
+        const b = data[pIdx + 2];
+        const a = data[pIdx + 3];
+        
+        const isTransparent = a < 150;
+        const isColorMatch = Math.abs(r - refBgR) < 15 && Math.abs(g - refBgG) < 15 && Math.abs(b - refBgB) < 15;
+        const isLight = (r + g + b) > 720;
+        
+        if (isTransparent || isColorMatch || isLight) {
+          isBg[idx] = 1;
+          
+          if (cx + 1 < width) {
+            const nIdx = idx + 1;
+            if (!visited[nIdx]) { visited[nIdx] = 1; queue[tail++] = nIdx; }
+          }
+          if (cx - 1 >= 0) {
+            const nIdx = idx - 1;
+            if (!visited[nIdx]) { visited[nIdx] = 1; queue[tail++] = nIdx; }
+          }
+          if (cy + 1 < height) {
+            const nIdx = idx + width;
+            if (!visited[nIdx]) { visited[nIdx] = 1; queue[tail++] = nIdx; }
+          }
+          if (cy - 1 >= 0) {
+            const nIdx = idx - width;
+            if (!visited[nIdx]) { visited[nIdx] = 1; queue[tail++] = nIdx; }
+          }
+        }
+      }
+      
+      // Calculate average color of valid fabric
+      let totalR = 0, totalG = 0, totalB = 0, totalCount = 0;
+      for (let i = 0; i < width * height; i++) {
+        if (!isBg[i]) {
+          const pIdx = i * 4;
+          totalR += data[pIdx];
+          totalG += data[pIdx + 1];
+          totalB += data[pIdx + 2];
+          totalCount++;
+        }
+      }
+      const avgR = totalCount > 0 ? Math.round(totalR / totalCount) : 230;
+      const avgG = totalCount > 0 ? Math.round(totalG / totalCount) : 225;
+      const avgB = totalCount > 0 ? Math.round(totalB / totalCount) : 220;
+      const avgGray = Math.round(0.299 * avgR + 0.587 * avgG + 0.114 * avgB);
+      
+      // Create color bleed image data to avoid white edge glows during scale blurring
+      const bleedCanvas = document.createElement('canvas');
+      bleedCanvas.width = width;
+      bleedCanvas.height = height;
+      const bleedCtx = bleedCanvas.getContext('2d')!;
+      const bleedImgData = bleedCtx.createImageData(width, height);
+      const bleedPixels = bleedImgData.data;
+      
+      for (let i = 0; i < width * height; i++) {
+        const pIdx = i * 4;
+        if (isBg[i]) {
+          bleedPixels[pIdx] = avgR;
+          bleedPixels[pIdx + 1] = avgG;
+          bleedPixels[pIdx + 2] = avgB;
+          bleedPixels[pIdx + 3] = 255;
+        } else {
+          bleedPixels[pIdx] = data[pIdx];
+          bleedPixels[pIdx + 1] = data[pIdx + 1];
+          bleedPixels[pIdx + 2] = data[pIdx + 2];
+          bleedPixels[pIdx + 3] = 255;
+        }
+      }
+      bleedCtx.putImageData(bleedImgData, 0, 0);
+      
+      // Downscale to heavily blur original high-frequency patterns
+      const blurSize = 80;
+      const blurCanvas = document.createElement('canvas');
+      blurCanvas.width = blurSize;
+      blurCanvas.height = blurSize;
+      const blurCtx = blurCanvas.getContext('2d')!;
+      blurCtx.imageSmoothingEnabled = true;
+      blurCtx.imageSmoothingQuality = 'high';
+      blurCtx.drawImage(bleedCanvas, 0, 0, blurSize, blurSize);
+      
+      // Scale-stretch back up to original size (bilinear-smoothing blur)
+      const blurredCanvas = document.createElement('canvas');
+      blurredCanvas.width = width;
+      blurredCanvas.height = height;
+      const blurredCtx = blurredCanvas.getContext('2d')!;
+      blurredCtx.imageSmoothingEnabled = true;
+      blurredCtx.imageSmoothingQuality = 'high';
+      blurredCtx.drawImage(blurCanvas, 0, 0, width, height);
+      
+      const blurredImgData = blurredCtx.getImageData(0, 0, width, height);
+      const bPixels = blurredImgData.data;
+      
+      // Construct final outputs
+      const maskCanvas = document.createElement('canvas');
+      maskCanvas.width = width;
+      maskCanvas.height = height;
+      const maskCtx = maskCanvas.getContext('2d')!;
+      const maskImgData = maskCtx.createImageData(width, height);
+      const maskPixels = maskImgData.data;
+      
+      const shadowCanvas = document.createElement('canvas');
+      shadowCanvas.width = width;
+      shadowCanvas.height = height;
+      const shadowCtx = shadowCanvas.getContext('2d')!;
+      const shadowImgData = shadowCtx.createImageData(width, height);
+      const shadowPixels = shadowImgData.data;
+      
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const idx = y * width + x;
+          const pIdx = idx * 4;
+          
+          if (isBg[idx]) {
+            maskPixels[pIdx] = 0;
+            maskPixels[pIdx + 1] = 0;
+            maskPixels[pIdx + 2] = 0;
+            maskPixels[pIdx + 3] = 0;
+            
+            shadowPixels[pIdx] = 255;
+            shadowPixels[pIdx + 1] = 255;
+            shadowPixels[pIdx + 2] = 255;
+            shadowPixels[pIdx + 3] = 0;
+          } else {
+            maskPixels[pIdx] = 0;
+            maskPixels[pIdx + 1] = 0;
+            maskPixels[pIdx + 2] = 0;
+            maskPixels[pIdx + 3] = 255;
+            
+            const br = bPixels[pIdx];
+            const bg = bPixels[pIdx + 1];
+            const bb = bPixels[pIdx + 2];
+            
+            const gray = Math.round(0.299 * br + 0.587 * bg + 0.114 * bb);
+            const shadowFactor = Math.min(255, Math.max(0, Math.round((gray * 255) / avgGray)));
+            
+            shadowPixels[pIdx] = shadowFactor;
+            shadowPixels[pIdx + 1] = shadowFactor;
+            shadowPixels[pIdx + 2] = shadowFactor;
+            shadowPixels[pIdx + 3] = 255;
+          }
+        }
+      }
+      
+      maskCtx.putImageData(maskImgData, 0, 0);
+      shadowCtx.putImageData(shadowImgData, 0, 0);
+      
+      resolve({
+        mask: maskCanvas.toDataURL(),
+        shadow: shadowCanvas.toDataURL()
+      });
+    };
+    img.onerror = () => {
+      resolve({ mask: imgSrc, shadow: imgSrc });
+    };
+    img.src = imgSrc;
+  });
+}
+
 interface GalleryProps {
   initialCategory?: string;
   onCategoryChange?: (category: string) => void;
@@ -169,7 +433,38 @@ export default function Gallery({ initialCategory = 'eco-bag', onCategoryChange 
   const [selectedProduct, setSelectedProduct] = useState<typeof PRODUCTS[0] | null>(null);
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [printFit, setPrintFit] = useState<'cover' | 'contain'>('contain');
+  const [mockupMode, setMockupMode] = useState<'wrap' | 'print'>('wrap');
+  const [patternSize, setPatternSize] = useState<'small' | 'medium' | 'large' | 'single'>('medium');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [productMask, setProductMask] = useState<string | null>(null);
+  const [productShadow, setProductShadow] = useState<string | null>(null);
+  const maskCache = useRef<Record<number, string>>({});
+  const shadowCache = useRef<Record<number, string>>({});
+
+  useEffect(() => {
+    if (!selectedProduct) {
+      setProductMask(null);
+      setProductShadow(null);
+      return;
+    }
+    
+    const productId = selectedProduct.id;
+    if (maskCache.current[productId] && shadowCache.current[productId]) {
+      setProductMask(maskCache.current[productId]);
+      setProductShadow(shadowCache.current[productId]);
+      return;
+    }
+
+    setProductMask(null);
+    setProductShadow(null);
+    generateCleanShadowMap(selectedProduct.img).then(({ mask, shadow }) => {
+      maskCache.current[productId] = mask;
+      shadowCache.current[productId] = shadow;
+      setProductMask(mask);
+      setProductShadow(shadow);
+    });
+  }, [selectedProduct?.id]);
 
   const handleSelectProduct = (product: typeof PRODUCTS[0] | null) => {
     setSelectedProduct(product);
@@ -218,29 +513,69 @@ export default function Gallery({ initialCategory = 'eco-bag', onCategoryChange 
                 onClick={() => fileInputRef.current?.click()}
                 className="aspect-square bg-[#F5F5F3] rounded-[3rem] border border-gray-100 shadow-xl overflow-hidden relative cursor-pointer hover:border-[#8BA8A4]/50 transition-all group/preview flex items-center justify-center p-0"
               >
-                {/* Product base image layer (crisp and high contrast, fully visible) */}
+                {/* Product base image layer */}
                 <img 
                   src={selectedProduct.img} 
                   alt={selectedProduct.title} 
-                  className="absolute w-full h-full object-contain transition-transform duration-300 group-hover/preview:scale-[1.02] p-8 pointer-events-none" 
+                  className={`absolute w-full h-full object-contain transition-transform duration-300 group-hover/preview:scale-[1.02] p-8 pointer-events-none ${uploadedImage && mockupMode === 'wrap' ? 'opacity-0' : 'opacity-100'}`} 
                 />
 
-                {/* The Mockup Layer: Uploaded Design overlay placed exactly over printAreaClass */}
+                {/* The Mockup Layer */}
                 {uploadedImage ? (
-                  <div className={`absolute ${selectedProduct.printAreaClass || 'top-[25%] left-[25%] w-[50%] h-[50%]'} pointer-events-none transition-transform duration-300 group-hover/preview:scale-[1.02] overflow-hidden`}>
-                    <img 
-                      src={uploadedImage} 
-                      alt="Uploaded pattern Mockup" 
-                      className={`w-full h-full ${printFit === 'contain' ? 'object-contain' : 'object-cover'} mix-blend-multiply opacity-85 animate-fade-in`} 
-                    />
-                    
-                    {/* Hover indicator for editing */}
-                    <div className="absolute inset-0 bg-black/10 flex items-center justify-center opacity-0 group-hover/preview:opacity-100 transition-opacity">
-                      <div className="bg-[#8BA8A4]/90 backdrop-blur-sm text-white px-4 py-1.5 rounded-full text-[9px] tracking-widest uppercase shadow-sm font-medium">
-                        클릭하여 이미지 교체
+                  mockupMode === 'wrap' ? (
+                    <div className="absolute inset-0 w-full h-full p-8 pointer-events-none transition-transform duration-300 group-hover/preview:scale-[1.02] flex items-center justify-center">
+                      <div className="relative w-full h-full flex items-center justify-center">
+                        {/* 1. Masked Pattern layer */}
+                        <div 
+                          className="absolute inset-0 w-full h-full overflow-hidden"
+                          style={{
+                            maskImage: `url(${productMask || selectedProduct.img})`,
+                            WebkitMaskImage: `url(${productMask || selectedProduct.img})`,
+                            maskSize: 'contain',
+                            WebkitMaskSize: 'contain',
+                            maskRepeat: 'no-repeat',
+                            WebkitMaskRepeat: 'no-repeat',
+                            maskPosition: 'center',
+                            WebkitMaskPosition: 'center',
+                          }}
+                        >
+                          <div 
+                            className="w-full h-full animate-fade-in"
+                            style={{
+                              backgroundImage: `url(${uploadedImage})`,
+                              backgroundSize: patternSize === 'small' ? '80px 80px' : patternSize === 'medium' ? '150px 150px' : patternSize === 'large' ? '260px 260px' : 'contain',
+                              backgroundRepeat: patternSize === 'single' ? 'no-repeat' : 'repeat',
+                              backgroundPosition: 'center',
+                              opacity: 0.95,
+                            }}
+                          />
+                        </div>
+
+                        {/* 2. Highlight & Shadow Overlay layer (mix-blend-multiply of clean patternless product shadow map) */}
+                        <img 
+                          src={productShadow || selectedProduct.img} 
+                          alt="" 
+                          className="absolute inset-0 w-full h-full object-contain mix-blend-multiply"
+                          style={{ opacity: 1.0 }}
+                        />
                       </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className={`absolute ${selectedProduct.printAreaClass || 'top-[25%] left-[25%] w-[50%] h-[50%]'} pointer-events-none transition-transform duration-300 group-hover/preview:scale-[1.02] overflow-hidden`}>
+                      <img 
+                        src={uploadedImage} 
+                        alt="Uploaded pattern Mockup" 
+                        className={`w-full h-full ${printFit === 'contain' ? 'object-contain' : 'object-cover'} mix-blend-multiply opacity-85 animate-fade-in`} 
+                      />
+                      
+                      {/* Hover indicator for editing */}
+                      <div className="absolute inset-0 bg-black/10 flex items-center justify-center opacity-0 group-hover/preview:opacity-100 transition-opacity">
+                        <div className="bg-[#8BA8A4]/90 backdrop-blur-sm text-white px-4 py-1.5 rounded-full text-[9px] tracking-widest uppercase shadow-sm font-medium">
+                          클릭하여 이미지 교체
+                        </div>
+                      </div>
+                    </div>
+                  )
                 ) : (
                   /* Guided Visual Design Overlay Area when no image is uploaded */
                   <div className={`absolute ${selectedProduct.printAreaClass || 'top-[25%] left-[25%] w-[50%] h-[50%]'} border-2 border-dashed border-[#8BA8A4]/30 rounded-xl flex flex-col items-center justify-center bg-white/40 backdrop-blur-[1px] hover:bg-white/10 transition-colors pointer-events-none`}>
@@ -252,29 +587,86 @@ export default function Gallery({ initialCategory = 'eco-bag', onCategoryChange 
             </div>
 
             {uploadedImage && (
-              <div className="flex justify-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => setPrintFit('contain')}
-                  className={`px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-wider uppercase transition-all shadow-sm ${
-                    printFit === 'contain'
-                      ? 'bg-[#8BA8A4] text-white'
-                      : 'bg-white text-[#8BA8A4] border border-gray-100 hover:bg-gray-50'
-                  }`}
-                >
-                  디자인 맞춤 (Fit)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPrintFit('cover')}
-                  className={`px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-wider uppercase transition-all shadow-sm ${
-                    printFit === 'cover'
-                      ? 'bg-[#8BA8A4] text-white'
-                      : 'bg-white text-[#8BA8A4] border border-gray-100 hover:bg-gray-50'
-                  }`}
-                >
-                  꽉 채우기 (Fill)
-                </button>
+              <div className="bg-white/80 backdrop-blur-md rounded-3xl p-6 border border-gray-200/60 shadow-sm space-y-6">
+                {/* 1. Mockup Mode Toggle */}
+                <div className="space-y-2">
+                  <span className="text-[10px] text-[#8BA8A4] uppercase tracking-wider font-semibold block text-left">인쇄 스타일 (Print Style)</span>
+                  <div className="grid grid-cols-2 gap-2 bg-[#F5F5F3] p-1.5 rounded-2xl">
+                    <button
+                      type="button"
+                      onClick={() => setMockupMode('wrap')}
+                      className={`py-2 rounded-xl text-xs font-bold transition-all ${
+                        mockupMode === 'wrap'
+                          ? 'bg-[#8BA8A4] text-white shadow-sm'
+                          : 'text-[#8BA8A4] hover:text-[#4A4A4A]'
+                      }`}
+                    >
+                      ✨ 3D 패턴 랩핑 (전체)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setMockupMode('print')}
+                      className={`py-2 rounded-xl text-xs font-bold transition-all ${
+                        mockupMode === 'print'
+                          ? 'bg-[#8BA8A4] text-white shadow-sm'
+                          : 'text-[#8BA8A4] hover:text-[#4A4A4A]'
+                      }`}
+                    >
+                      ▫️ 중앙 평면 인쇄 (일부)
+                    </button>
+                  </div>
+                </div>
+
+                {/* 2. Style Options based on Mockup Mode */}
+                {mockupMode === 'wrap' ? (
+                  <div className="space-y-3">
+                    <span className="text-[10px] text-[#8BA8A4] uppercase tracking-wider font-semibold block text-left">패턴 크기 (Pattern Density)</span>
+                    <div className="grid grid-cols-4 gap-2">
+                      {(['small', 'medium', 'large', 'single'] as const).map((size) => (
+                        <button
+                          key={size}
+                          type="button"
+                          onClick={() => setPatternSize(size)}
+                          className={`py-2 rounded-xl text-[10px] font-bold transition-all text-center border capitalize ${
+                            patternSize === size
+                              ? 'bg-[#4A4A4A] text-white border-[#4A4A4A] shadow-sm'
+                              : 'bg-white text-[#8BA8A4] border-gray-100 hover:bg-gray-50'
+                          }`}
+                        >
+                          {size === 'small' ? '촘촘하게' : size === 'medium' ? '기본' : size === 'large' ? '크게' : '한번만'}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <span className="text-[10px] text-[#8BA8A4] uppercase tracking-wider font-semibold block text-left">인쇄 비율 (Print Fit)</span>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setPrintFit('contain')}
+                        className={`py-2 rounded-xl text-xs font-bold transition-all border ${
+                          printFit === 'contain'
+                            ? 'bg-[#4A4A4A] text-white border-[#4A4A4A]'
+                            : 'bg-white text-[#8BA8A4] border-gray-100 hover:bg-gray-50'
+                        }`}
+                      >
+                        디자인 맞춤 (Fit)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPrintFit('cover')}
+                        className={`py-2 rounded-xl text-xs font-bold transition-all border ${
+                          printFit === 'cover'
+                            ? 'bg-[#4A4A4A] text-white border-[#4A4A4A]'
+                            : 'bg-white text-[#8BA8A4] border-gray-100 hover:bg-gray-50'
+                        }`}
+                      >
+                        꽉 채우기 (Fill)
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
             
