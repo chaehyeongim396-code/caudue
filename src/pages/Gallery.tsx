@@ -707,7 +707,7 @@ export default function Gallery({ initialCategory = 'eco-bag', onCategoryChange 
             <div className="space-y-6">
               <h3 className="text-sm font-serif italic text-[#8BA8A4] tracking-wider">다른 기본 아이템 선택</h3>
               <div className="grid grid-cols-5 gap-3">
-                {PRODUCTS.filter(p => p.category === activeCategory).slice(0, 10).map((p) => (
+                {(activeCategory === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.category === activeCategory)).slice(0, 10).map((p) => (
                   <button 
                     key={p.id}
                     onClick={() => handleSelectProduct(p)}
