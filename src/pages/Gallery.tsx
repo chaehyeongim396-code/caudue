@@ -734,7 +734,7 @@ export default function Gallery({ initialCategory = 'eco-bag', onCategoryChange 
                         : 'text-[#8BA8A4] hover:text-[#4A4A4A]'
                     }`}
                   >
-                    Large (기본형)
+                    Large
                   </button>
                   <button
                     type="button"
@@ -748,7 +748,7 @@ export default function Gallery({ initialCategory = 'eco-bag', onCategoryChange 
                         : 'text-[#8BA8A4] hover:text-[#4A4A4A]'
                     }`}
                   >
-                    Small (스몰형)
+                    Small
                   </button>
                 </div>
                 <p className="text-[10px] text-[#8BA8A4] italic block text-left">
