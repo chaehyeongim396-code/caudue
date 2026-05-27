@@ -34,11 +34,25 @@ const PRODUCTS = [
   { 
     id: 1, 
     category: 'eco-bag', 
-    title: '클래식 캔버스 백', 
+    title: '클래식 캔버스 백 (L)', 
     price: '15,000원', 
     img: bagImg1,
     description: '어떤 룩에도 잘 어울리는 가장 기본적인 디자인의 캔버스 백입니다.\n탄탄한 조직감의 10수 캔버스 원단으로 제작되어 내구성이 뛰어납니다.',
     size: '가로 36cm x 세로 40cm (끈 길이 60cm)',
+    material: 'Cotton 100% (10oz Canvas)',
+    printAreaClass: 'top-[31%] left-[24%] w-[51%] h-[44%] rounded-sm',
+    wearImages: [
+      wearClassicCanvas
+    ]
+  },
+  { 
+    id: 10, 
+    category: 'eco-bag', 
+    title: '클래식 캔버스 백 (S)', 
+    price: '13,000원', 
+    img: bagImg1,
+    description: '어떤 룩에도 가볍게 어울리는 클래식 캔버스 백의 콤팩트한 스몰 에디션입니다.\n원래보다 아담한 사이즈로, 간편한 데일리 소지품을 귀엽고 탄탄하게 수납할 수 있습니다.',
+    size: '가로 28cm x 세로 32cm (끈 길이 52cm)',
     material: 'Cotton 100% (10oz Canvas)',
     printAreaClass: 'top-[31%] left-[24%] w-[51%] h-[44%] rounded-sm',
     wearImages: [
@@ -703,6 +717,47 @@ export default function Gallery({ initialCategory = 'eco-bag', onCategoryChange 
                 <p className="text-sm font-medium text-[#8BA8A4]">{selectedProduct.price}</p>
               </div>
             </div>
+
+            {(selectedProduct.id === 1 || selectedProduct.id === 10) && (
+              <div className="space-y-3 bg-white/40 backdrop-blur-[1px] p-5 rounded-[2rem] border border-gray-100/80">
+                <span className="text-[10px] text-[#8BA8A4] uppercase tracking-wider font-semibold block text-left">사이즈 옵션 (Size Option)</span>
+                <div className="grid grid-cols-2 gap-2 bg-[#F5F5F3] p-1.5 rounded-2xl">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const lProduct = PRODUCTS.find(p => p.id === 1);
+                      if (lProduct) handleSelectProduct(lProduct);
+                    }}
+                    className={`py-2 rounded-xl text-xs font-bold transition-all ${
+                      selectedProduct.id === 1
+                        ? 'bg-[#8BA8A4] text-white shadow-sm'
+                        : 'text-[#8BA8A4] hover:text-[#4A4A4A]'
+                    }`}
+                  >
+                    Large (기본형)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const sProduct = PRODUCTS.find(p => p.id === 10);
+                      if (sProduct) handleSelectProduct(sProduct);
+                    }}
+                    className={`py-2 rounded-xl text-xs font-bold transition-all ${
+                      selectedProduct.id === 10
+                        ? 'bg-[#8BA8A4] text-white shadow-sm'
+                        : 'text-[#8BA8A4] hover:text-[#4A4A4A]'
+                    }`}
+                  >
+                    Small (스몰형)
+                  </button>
+                </div>
+                <p className="text-[10px] text-[#8BA8A4] italic block text-left">
+                  {selectedProduct.id === 1 
+                    ? '가로 36cm x 세로 40cm 규격의 넉넉한 수납을 제공합니다.' 
+                    : '가로 28cm x 세로 32cm 규격의 가볍고 귀여운 미니 에디션입니다.'}
+                </p>
+              </div>
+            )}
 
             <div className="space-y-6">
               <h3 className="text-sm font-serif italic text-[#8BA8A4] tracking-wider">다른 기본 아이템 선택</h3>
