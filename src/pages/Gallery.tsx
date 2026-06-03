@@ -1,16 +1,18 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Upload, ChevronLeft } from 'lucide-react';
+import { Upload, ChevronLeft, RotateCcw } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import logo from '../assets/images/regenerated_image_1778585349920.png';
-import bagImg1 from '../assets/images/original_classic_canvas.png';
+import bagImg1_L from '../assets/images/original_classic_canvas.png';
+import bagImg1_S from '../assets/images/assets/original_classic_canvas-BNSzQsVn.png';
 import bagImg2 from '../assets/images/original_linen_shoulder.png';
 import bagImg3 from '../assets/images/regenerated_image_1777443640441.png';
 import bagImg4 from '../assets/images/regenerated_image_1777443631544.png';
 import bagImg6 from '../assets/images/regenerated_image_1777442501187.png';
 import twistEcoBagImg from '../assets/images/regenerated_image_1779260826431.png';
 import wearLinenShoulder from '../assets/images/wear_linen_shoulder.png';
-import wearClassicCanvas from '../assets/images/assets/wear_classic_canvas-C39h55ke.png';
+import wearClassicCanvasL from '../assets/images/assets/wear_classic_canvas-C39h55ke-CCda6Ygs.png';
+import wearClassicCanvasS from '../assets/images/assets/wear_classic_canvas-C39h55ke-BNuJSD_n.png';
 import wearBasicTote from '../assets/images/regenerated_image_1779689580045.png';
 import wearMiniDaily from '../assets/images/wear_mini_daily.png';
 import wearCloudBag from '../assets/images/wear_cloud_bag.png';
@@ -36,13 +38,13 @@ const PRODUCTS = [
     category: 'eco-bag', 
     title: '클래식 캔버스 백 (L)', 
     price: '15,000원', 
-    img: bagImg1,
+    img: bagImg1_L,
     description: '어떤 룩에도 잘 어울리는 가장 기본적인 디자인의 캔버스 백입니다.\n탄탄한 조직감의 10수 캔버스 원단으로 제작되어 내구성이 뛰어납니다.',
     size: '가로 36cm x 세로 40cm (끈 길이 60cm)',
     material: 'Cotton 100% (10oz Canvas)',
     printAreaClass: 'top-[31%] left-[24%] w-[51%] h-[44%] rounded-sm',
     wearImages: [
-      wearClassicCanvas
+      wearClassicCanvasS
     ]
   },
   { 
@@ -50,13 +52,13 @@ const PRODUCTS = [
     category: 'eco-bag', 
     title: '클래식 캔버스 백 (S)', 
     price: '13,000원', 
-    img: bagImg1,
+    img: bagImg1_S,
     description: '어떤 룩에도 가볍게 어울리는 클래식 캔버스 백의 콤팩트한 스몰 에디션입니다.\n원래보다 아담한 사이즈로, 간편한 데일리 소지품을 귀엽고 탄탄하게 수납할 수 있습니다.',
     size: '가로 28cm x 세로 32cm (끈 길이 52cm)',
     material: 'Cotton 100% (10oz Canvas)',
     printAreaClass: 'top-[31%] left-[24%] w-[51%] h-[44%] rounded-sm',
     wearImages: [
-      wearClassicCanvas
+      wearClassicCanvasL
     ]
   },
   { 
@@ -692,13 +694,30 @@ export default function Gallery({ initialCategory = 'eco-bag', onCategoryChange 
               className="hidden" 
             />
 
-            <button 
-              onClick={() => fileInputRef.current?.click()}
-              className="w-full py-5 bg-[#8BA8A4] text-white rounded-2xl font-bold tracking-widest text-sm hover:bg-[#7A9793] transition-all flex items-center justify-center gap-3 shadow-md hover:shadow-lg active:scale-[0.99]"
-            >
-              <Upload size={18} />
-              이미지 업로드 (.JPG / .PNG)
-            </button>
+            <div className="flex gap-3 w-full">
+              <button 
+                onClick={() => fileInputRef.current?.click()}
+                className={`${uploadedImage ? 'flex-[2]' : 'w-full'} py-5 bg-[#8BA8A4] text-white rounded-2xl font-bold tracking-widest text-sm hover:bg-[#7A9793] transition-all flex items-center justify-center gap-3 shadow-md hover:shadow-lg active:scale-[0.99]`}
+              >
+                <Upload size={18} />
+                이미지 업로드 (.JPG / .PNG)
+              </button>
+              {uploadedImage && (
+                <button 
+                  onClick={() => {
+                    setUploadedImage(null);
+                    if (fileInputRef.current) {
+                      fileInputRef.current.value = '';
+                    }
+                  }}
+                  className="flex-1 py-5 bg-white border border-[#8BA8A4] text-[#8BA8A4] rounded-2xl font-bold tracking-widest text-sm hover:bg-[#F2F6F5] transition-all flex items-center justify-center gap-2 shadow-sm"
+                  title="초기화"
+                >
+                  <RotateCcw size={16} />
+                  초기화
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Right: Options Section */}

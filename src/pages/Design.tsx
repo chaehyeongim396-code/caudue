@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Upload, X, Sparkles, RefreshCw, ChevronLeft, ChevronRight, Check, Heart } from 'lucide-react';
+import { Upload, X, Sparkles, RefreshCw, ChevronLeft, ChevronRight, Check, Heart, Download } from 'lucide-react';
 import { generatePatternFromMemory, PatternDesign } from '../services/geminiService';
 import { useCart } from '../context/CartContext';
 import logo from '../assets/images/regenerated_image_1778585349920.png';
@@ -12,7 +12,11 @@ const STYLES = [
   { id: 'balletcore', label: '발레코어', color: 'bg-[#F2E8F9]' }
 ];
 
-export default function Design() {
+interface DesignProps {
+  onNavigateToShop?: () => void;
+}
+
+export default function Design({ onNavigateToShop }: DesignProps) {
   const { addToCart } = useCart();
   const [step, setStep] = useState(1);
   const [textInput, setTextInput] = useState('');
@@ -21,6 +25,83 @@ export default function Design() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [result, setResult] = useState<PatternDesign | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleSavePattern = () => {
+    if (!result) return;
+    
+    const canvas = document.createElement('canvas');
+    canvas.width = 800;
+    canvas.height = 800;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
+    // Draw background color
+    ctx.fillStyle = result.colors[0] || '#FFFFFF';
+    ctx.fillRect(0, 0, 800, 800);
+    
+    // First layer: large soft ambient radial glows
+    for (let i = 0; i < 15; i++) {
+      const x = Math.random() * 800;
+      const y = Math.random() * 800;
+      const radius = 200 + Math.random() * 300;
+      const color = result.colors[Math.floor(Math.random() * result.colors.length)] || '#FFF';
+      
+      const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+      gradient.addColorStop(0, color);
+      gradient.addColorStop(1, 'transparent');
+      
+      ctx.fillStyle = gradient;
+      ctx.globalAlpha = 0.4;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    
+    // Second layer: delicate woven rings
+    ctx.globalAlpha = 0.15;
+    ctx.lineWidth = 2;
+    for (let i = 0; i < 25; i++) {
+      const x = Math.random() * 800;
+      const y = Math.random() * 800;
+      const radius = 20 + Math.random() * 80;
+      const color = result.colors[Math.floor(Math.random() * result.colors.length)] || '#FFF';
+      
+      ctx.strokeStyle = color;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    
+    // Third layer: random small soft sparkles
+    ctx.globalAlpha = 0.25;
+    for (let i = 0; i < 40; i++) {
+      const x = Math.random() * 800;
+      const y = Math.random() * 800;
+      const radius = 5 + Math.random() * 15;
+      const color = result.colors[Math.floor(Math.random() * result.colors.length)] || '#FFF';
+      
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Restore opacity
+    ctx.globalAlpha = 1.0;
+    
+    // Soft watermark/brand details
+    ctx.fillStyle = '#2C2C2C';
+    ctx.font = 'italic 16px "Space Grotesk", sans-serif';
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.1)';
+    ctx.shadowBlur = 4;
+    ctx.fillText(`Cadeau: ${result.title}`, 40, 750);
+    
+    const dataUrl = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = `${result.title.replace(/\s+/g, '_')}_pattern.png`;
+    link.href = dataUrl;
+    link.click();
+  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -207,9 +288,6 @@ export default function Design() {
                   <RefreshCw size={48} strokeWidth={1} className="text-[#E8DCC4]" />
                 </motion.div>
                 <h2 className="text-2xl font-serif italic mb-4">패턴을 엮는 중입니다...</h2>
-                <p className="text-sm font-light text-[#7D7D7D] max-w-xs leading-relaxed">
-                  인공지능이 당신의 추억 속 감정적 뉘앙스를 분석하여 오직 당신만의 디자인을 만들고 있습니다.
-                </p>
               </div>
             ) : result && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
@@ -267,30 +345,22 @@ export default function Design() {
                   </div>
 
                   <div className="space-y-6">
-                    <div className="flex justify-between items-center pb-4 border-b border-[#E8DCC4]">
-                      <span className="text-[10px] uppercase tracking-widest font-medium">아이템: 에코백</span>
-                      <span className="text-[10px] uppercase tracking-widest font-medium">245,000원</span>
-                    </div>
-                    
                     <button
                       id="buy-btn"
                       onClick={() => {
-                        if (result) {
-                          addToCart({
-                            id: `custom-${result.title.replace(/\s+/g, '-')}-${Date.now()}`,
-                            title: result.title + ' (맞춤 제작 에코백)',
-                            price: '245,000원',
-                            img: '',
-                            colors: result.colors,
-                            story: result.story,
-                            type: 'custom',
-                            size: '가로 36cm x 세로 40cm'
-                          });
-                        }
+                        onNavigateToShop?.();
                       }}
                       className="w-full bg-[#2C2C2C] text-white py-5 rounded-full text-xs font-medium tracking-[0.2em] transition-all hover:scale-[1.02]"
                     >
                       제작 요청하기 (주문)
+                    </button>
+                    
+                    <button
+                      id="save-pattern-btn"
+                      onClick={handleSavePattern}
+                      className="w-full border border-[#2C2C2C] text-[#2C2C2C] py-5 rounded-full text-xs font-medium tracking-[0.2em] transition-all hover:bg-[#2C2C2C] hover:text-white flex items-center justify-center gap-2"
+                    >
+                      <Download size={14} /> 패턴 저장하기
                     </button>
                     
                     <button

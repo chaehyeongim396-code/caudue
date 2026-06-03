@@ -40,7 +40,7 @@ export default function App() {
       case 'archive':
         return <Archive />;
       case 'design':
-        return <Design />;
+        return <Design onNavigateToShop={() => handleNavigateToShop('all')} />;
       case 'gallery':
         return (
           <Gallery 
